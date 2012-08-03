@@ -163,6 +163,12 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
         mKeyguardShowing = keyguardShowing;
         mDeviceProvisioned = isDeviceProvisioned;
         if (mDialog != null) {
+<<<<<<< HEAD
+=======
+            if (mUiContext != null) {
+                mUiContext = null;
+            }
+>>>>>>> 9b8eee8... GlobalActions: Fix dialog dismissal
             mDialog.dismiss();
             mDialog = null;
             // Show delayed, so that the dismiss of the previous dialog completes
