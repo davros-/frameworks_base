@@ -34,7 +34,11 @@ import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+<<<<<<< HEAD
 import android.os.Bundle;
+=======
+import android.os.Handler;
+>>>>>>> 44bbfbe... "Clear all" button on recent apps
 import android.os.RemoteException;
 import android.os.UserHandle;
 import android.provider.Settings;
@@ -52,9 +56,11 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.PopupMenu;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.systemui.R;
@@ -64,6 +70,7 @@ import com.android.systemui.statusbar.tablet.StatusBarPanel;
 import com.android.systemui.statusbar.tablet.TabletStatusBar;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 public class RecentsPanelView extends FrameLayout implements OnItemClickListener, RecentsCallback,
         StatusBarPanel, Animator.AnimatorListener {
@@ -73,13 +80,26 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
     private View mRecentsScrim;
     private View mRecentsNoApps;
     private ViewGroup mRecentsContainer;
+    private Object mScrollView;
     private StatusBarTouchProxy mStatusBarTouchProxy;
 
     private boolean mShowing;
     private boolean mWaitingToShow;
     private int mNumItemsWaitingForThumbnailsAndIcons;
+<<<<<<< HEAD
     private ViewHolder mItemToAnimateInWhenWindowAnimationIsFinished;
     private boolean mWaitingForWindowAnimation;
+=======
+    private Choreographer mChoreo;
+    OnRecentsPanelVisibilityChangedListener mVisibilityChangedListener;
+
+    ImageView mClearRecents;
+    ImageView mPlaceholderThumbnail;
+    View mTransitionBg;
+    boolean mHideRecentsAfterThumbnailScaleUpStarted;
+>>>>>>> 44bbfbe... "Clear all" button on recent apps
+
+    Handler mTaskHandler;
 
     private RecentTasksLoader mRecentTasksLoader;
     private ArrayList<TaskDescription> mRecentTaskDescriptions;
@@ -247,6 +267,11 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
 
     public RecentsPanelView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+<<<<<<< HEAD
+=======
+        mContext = context;
+        mTaskHandler = new Handler();
+>>>>>>> 44bbfbe... "Clear all" button on recent apps
         updateValuesFromResources();
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RecentsPanelView,
@@ -331,6 +356,54 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
             mRecentsNoApps.setAlpha(1f);
             mRecentsNoApps.setVisibility(noApps ? View.VISIBLE : View.INVISIBLE);
 
+<<<<<<< HEAD
+=======
+            // if there are no apps, either bring up a "No recent apps" message, or just
+            // quit early
+            boolean noApps = !mFirstScreenful && (mRecentTaskDescriptions.size() == 0);
+
+            // if no apps found, we just hide the "Clear" button as it's not needed
+            if(mClearRecents != null){
+                mClearRecents.setVisibility(noApps ? View.GONE : View.VISIBLE);
+            }
+
+            if (mRecentsNoApps != null) {
+                mRecentsNoApps.setAlpha(1f);
+                mRecentsNoApps.setVisibility(noApps ? View.VISIBLE : View.INVISIBLE);
+            } else {
+                if (noApps) {
+                   if (DEBUG) Log.v(TAG, "Nothing to show");
+                    // Need to set recent tasks to dirty so that next time we load, we
+                    // refresh the list of tasks
+                    mRecentTasksLoader.cancelLoadingThumbnailsAndIcons();
+                    mRecentTasksDirty = true;
+
+                    mWaitingToShow = false;
+                    mReadyToShow = false;
+                    return;
+                }
+            }
+        } else {
+            // Need to set recent tasks to dirty so that next time we load, we
+            // refresh the list of tasks
+            mRecentTasksLoader.cancelLoadingThumbnailsAndIcons();
+            mRecentTasksDirty = true;
+            mWaitingToShow = false;
+            mReadyToShow = false;
+        }
+        if (animate) {
+            if (mShowing != show) {
+                mShowing = show;
+                if (show) {
+                    setVisibility(View.VISIBLE);
+                }
+                mChoreo.startAnimation(show);
+            }
+        } else {
+            mShowing = show;
+            setVisibility(show ? View.VISIBLE : View.GONE);
+            mChoreo.jumpTo(show);
+>>>>>>> 44bbfbe... "Clear all" button on recent apps
             onAnimationEnd(null);
             setFocusable(true);
             setFocusableInTouchMode(true);
@@ -415,6 +488,8 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
         mFitThumbnailToXY = res.getBoolean(R.bool.config_recents_thumbnail_image_fits_to_xy);
     }
 
+    protected static ArrayList<View> mViewContainer = new ArrayList();
+
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
@@ -433,6 +508,45 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
 
         mRecentsScrim = findViewById(R.id.recents_bg_protect);
         mRecentsNoApps = findViewById(R.id.recents_no_apps);
+
+        mClearRecents = (ImageView) findViewById(R.id.recents_clear);
+        if (mClearRecents != null){
+            mClearRecents.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new Thread(new Runnable(){
+                        public void run(){
+                            if(mScrollView instanceof ScrollView){
+                                ((ScrollView) mScrollView).smoothScrollTo(0,0);
+                            } else if(mScrollView instanceof HorizontalScrollView) {
+                                ((HorizontalScrollView) mScrollView).smoothScrollTo(0,0);
+                            }
+
+                            try{
+                                for (final View child : mViewContainer){
+                                    mTaskHandler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mRecentsContainer.removeViewInLayout(child);
+                                        }
+                                    });
+
+                                    // Add a small delay before of removing next app
+                                    Thread.sleep(150);
+                                }
+                            } catch (ConcurrentModificationException e){
+                                // User pressed back key before animation finished. This is not
+                                // such a good idea, and we can't deal with it on any other way,
+                                // so we just interrupt the process instead of crashing.
+                            } catch (InterruptedException ie){
+                                // User will see the app fading instantly after the previous
+                                // one. This will probably never happen
+                            }
+                        }
+                    }).start();
+                }
+            });
+        }
 
         if (mRecentsScrim != null) {
             mHighEndGfx = ActivityManager.isHighEndGfx();
@@ -657,7 +771,65 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
                 ActivityOptions.makeThumbnailScaleUpAnimation(
                         holder.thumbnailViewImage, bm, 0, 0, null).toBundle();
 
+<<<<<<< HEAD
         show(false);
+=======
+        if (mPlaceholderThumbnail == null) {
+            mPlaceholderThumbnail =
+                    (ImageView) findViewById(R.id.recents_transition_placeholder_icon);
+        }
+        if (mTransitionBg == null) {
+            mTransitionBg = (View) findViewById(R.id.recents_transition_background);
+
+            IWindowManager wm = IWindowManager.Stub.asInterface(
+                    ServiceManager.getService(Context.WINDOW_SERVICE));
+            try {
+                if (!wm.hasSystemNavBar()) {
+                    FrameLayout.LayoutParams lp =
+                            (FrameLayout.LayoutParams) mTransitionBg.getLayoutParams();
+                    int statusBarHeight = getResources().
+                            getDimensionPixelSize(com.android.internal.R.dimen.status_bar_height);
+                    lp.setMargins(0, statusBarHeight, 0, 0);
+                    mTransitionBg.setLayoutParams(lp);
+                }
+            } catch (RemoteException e) {
+                Log.w(TAG, "Failing checking whether status bar is visible", e);
+            }
+        }
+
+        final ImageView placeholderThumbnail = mPlaceholderThumbnail;
+        mHideRecentsAfterThumbnailScaleUpStarted = false;
+        placeholderThumbnail.setVisibility(VISIBLE);
+        if (!usingDrawingCache) {
+            placeholderThumbnail.setImageBitmap(bm);
+        } else {
+            Bitmap b2 = bm.copy(bm.getConfig(), true);
+            placeholderThumbnail.setImageBitmap(b2);
+        }
+        Rect r = new Rect();
+        holder.thumbnailViewImage.getGlobalVisibleRect(r);
+
+        placeholderThumbnail.setTranslationX(r.left);
+        placeholderThumbnail.setTranslationY(r.top);
+
+        show(false, true);
+
+        mThumbnailScaleUpStarted = false;
+        ActivityOptions opts = ActivityOptions.makeDelayedThumbnailScaleUpAnimation(
+                holder.thumbnailViewImage, bm, 0, 0,
+                new ActivityOptions.OnAnimationStartedListener() {
+                    @Override
+                    public void onAnimationStarted() {
+                        mThumbnailScaleUpStarted = true;
+                        if (!mHighEndGfx) {
+                            mPlaceholderThumbnail.setVisibility(INVISIBLE);
+                        }
+                        if (mHideRecentsAfterThumbnailScaleUpStarted) {
+                            hideWindow();
+                        }
+                    }
+                });
+>>>>>>> 44bbfbe... "Clear all" button on recent apps
         if (ad.taskId >= 0) {
             // This is an active task; it should just go to the foreground.
             am.moveTaskToFront(ad.taskId, ActivityManager.MOVE_TASK_WITH_HOME,
@@ -697,8 +869,6 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
             dismissAndGoBack();
         }
 
-        // Currently, either direction means the same thing, so ignore direction and remove
-        // the task.
         final ActivityManager am = (ActivityManager)
                 mContext.getSystemService(Context.ACTIVITY_SERVICE);
         if (am != null) {
@@ -726,6 +896,10 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
         } else {
             return super.onInterceptTouchEvent(ev);
         }
+    }
+
+    public void setScrollView(Object scrollView){
+        mScrollView = scrollView;
     }
 
     public void handleLongPress(
@@ -761,5 +935,13 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
             }
         });
         popup.show();
+    }
+
+    public void addContainer(View container){
+        mViewContainer.add(container);
+    }
+
+    public void clear(){
+        mViewContainer.clear();
     }
 }
