@@ -1202,10 +1202,14 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             // 0-599dp: "phone" UI with a separate status & navigation bar
             mHasSystemNavBar = false;
             mNavigationBarCanMove = true;
+            Settings.System.putInt(mContext.getContentResolver(),
+                    Settings.System.TABLET_UI, 0);
         } else if (shortSizeDp < 720) {
             // 600+dp: "phone" UI with modifications for larger screens
             mHasSystemNavBar = false;
             mNavigationBarCanMove = false;
+            Settings.System.putInt(mContext.getContentResolver(),
+                    Settings.System.TABLET_UI, 2);
         }
 
         if (mHasSystemNavBar) {
@@ -1215,11 +1219,19 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     Settings.System.NAVIGATION_BAR_SHOW, showByDefault) == 1;
 
             /*
+<<<<<<< HEAD
 	    * at first boot up, we need to make sure navbar gets created
 	    * (or obey framework setting).
 	    * this should quickly get over-ridden by the settings observer
 	    * if it was disabled by the user.
 	    */
+=======
+             * at first boot up, we need to make sure navbar gets created
+             * (or obey framework setting).
+             * this should quickly get over-ridden by the settings observer	
+             * if it was disabled by the user.
+            */
+>>>>>>> 947e65d... Port Forward: NavBar Customization
             if (mNavBarFirstBootFlag) {
                 mHasNavigationBar = (showByDefault == 1);
                 mNavBarFirstBootFlag = false;
@@ -1228,9 +1240,11 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             // Allow a system property to override this. Used by the emulator.
             // See also hasNavigationBar().
             String navBarOverride = SystemProperties.get("qemu.hw.mainkeys");
-            if (! "".equals(navBarOverride)) {
-                if      (navBarOverride.equals("1")) mHasNavigationBar = false;
-                else if (navBarOverride.equals("0")) mHasNavigationBar = true;
+            if (!"".equals(navBarOverride)) {
+                if (navBarOverride.equals("1"))
+                    mHasNavigationBar = false;
+                else if (navBarOverride.equals("0"))
+                    mHasNavigationBar = true;
             }
         }
 
