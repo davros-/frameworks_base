@@ -500,10 +500,6 @@ public class PhoneStatusBar extends BaseStatusBar {
 
         mTicker = new MyTicker(context, mStatusBarView);
 
-<<<<<<< HEAD
-=======
-
->>>>>>> ad3c941... Squashed commit of the theme engine support.
         TickerView tickerView = (TickerView)mStatusBarView.findViewById(R.id.tickerText);
         tickerView.mTicker = mTicker;
 
