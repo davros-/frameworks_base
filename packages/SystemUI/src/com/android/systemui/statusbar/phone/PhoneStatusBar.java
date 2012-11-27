@@ -495,11 +495,6 @@ public class PhoneStatusBar extends BaseStatusBar {
 
         mTicker = new MyTicker(context, mStatusBarView);
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 97e07ab... Revert "Framework: Add Power Widget (Phone)"
         TickerView tickerView = (TickerView)mStatusBarView.findViewById(R.id.tickerText);
         tickerView.mTicker = mTicker;
 
