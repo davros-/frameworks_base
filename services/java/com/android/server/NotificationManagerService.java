@@ -1262,7 +1262,7 @@ public class NotificationManagerService extends INotificationManager.Stub
 
                 // The DEFAULT_VIBRATE flag trumps any custom vibration.
                 final boolean useDefaultVibrate =
-                    (notification.defaults & Notification.DEFAULT_VIBRATE) != 0;
+                   (notification.defaults & Notification.DEFAULT_VIBRATE) != 0;
                 if (!(inQuietHours && mQuietHoursStill)
                         && (useDefaultVibrate || notification.vibrate != null))
 
