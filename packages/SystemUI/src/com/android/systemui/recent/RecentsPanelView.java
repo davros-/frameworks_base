@@ -34,7 +34,11 @@ import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+<<<<<<< HEAD
+import android.os.Bundle;
+=======
 import android.os.Handler;
+>>>>>>> 44bbfbe... "Clear all" button on recent apps
 import android.os.RemoteException;
 import android.os.UserHandle;
 import android.provider.Settings;
@@ -82,6 +86,10 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
     private boolean mShowing;
     private boolean mWaitingToShow;
     private int mNumItemsWaitingForThumbnailsAndIcons;
+<<<<<<< HEAD
+    private ViewHolder mItemToAnimateInWhenWindowAnimationIsFinished;
+    private boolean mWaitingForWindowAnimation;
+=======
     private Choreographer mChoreo;
     OnRecentsPanelVisibilityChangedListener mVisibilityChangedListener;
 
@@ -89,6 +97,7 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
     ImageView mPlaceholderThumbnail;
     View mTransitionBg;
     boolean mHideRecentsAfterThumbnailScaleUpStarted;
+>>>>>>> 44bbfbe... "Clear all" button on recent apps
 
     Handler mTaskHandler;
 
@@ -258,8 +267,11 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
 
     public RecentsPanelView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+<<<<<<< HEAD
+=======
         mContext = context;
         mTaskHandler = new Handler();
+>>>>>>> 44bbfbe... "Clear all" button on recent apps
         updateValuesFromResources();
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RecentsPanelView,
@@ -344,6 +356,8 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
             mRecentsNoApps.setAlpha(1f);
             mRecentsNoApps.setVisibility(noApps ? View.VISIBLE : View.INVISIBLE);
 
+<<<<<<< HEAD
+=======
             // if there are no apps, either bring up a "No recent apps" message, or just
             // quit early
             boolean noApps = !mFirstScreenful && (mRecentTaskDescriptions.size() == 0);
@@ -389,6 +403,7 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
             mShowing = show;
             setVisibility(show ? View.VISIBLE : View.GONE);
             mChoreo.jumpTo(show);
+>>>>>>> 44bbfbe... "Clear all" button on recent apps
             onAnimationEnd(null);
             setFocusable(true);
             setFocusableInTouchMode(true);
@@ -756,6 +771,9 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
                 ActivityOptions.makeThumbnailScaleUpAnimation(
                         holder.thumbnailViewImage, bm, 0, 0, null).toBundle();
 
+<<<<<<< HEAD
+        show(false);
+=======
         if (mPlaceholderThumbnail == null) {
             mPlaceholderThumbnail =
                     (ImageView) findViewById(R.id.recents_transition_placeholder_icon);
@@ -811,6 +829,7 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
                         }
                     }
                 });
+>>>>>>> 44bbfbe... "Clear all" button on recent apps
         if (ad.taskId >= 0) {
             // This is an active task; it should just go to the foreground.
             am.moveTaskToFront(ad.taskId, ActivityManager.MOVE_TASK_WITH_HOME,
