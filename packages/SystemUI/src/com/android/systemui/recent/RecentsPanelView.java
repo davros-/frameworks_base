@@ -369,7 +369,7 @@ public class RecentsPanelView extends FrameLayout implements OnItemClickListener
                     return;
                 }
             }
-        } else {
+        
             // Need to set recent tasks to dirty so that next time we load, we
             // refresh the list of tasks
             mRecentTasksLoader.cancelLoadingThumbnailsAndIcons();
