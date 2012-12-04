@@ -727,6 +727,7 @@ public class NotificationManagerService extends INotificationManager.Stub
                     Settings.System.QUIET_HOURS_DIM, 0) != 0;
         }
     }
+
     NotificationManagerService(Context context, StatusBarManagerService statusBar,
             LightsService lights)
     {
