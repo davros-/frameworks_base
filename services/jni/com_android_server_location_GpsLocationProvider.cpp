@@ -196,16 +196,23 @@ static void agps_status_callback(AGpsStatus* agps_status)
 #else
     uint32_t ipaddr;
     // ipaddr field was not included in original AGpsStatus
-    if (agps_status->size >= sizeof(AGpsStatus))
-#ifdef NEW_QC_GPS
-        ipaddr = agps_status->ipv4_addr;
-#else
-        ipaddr = agps_status->ipaddr;
+    if (agps_status->size >= sizeof(AGpsStatus)) {
+        if (agps_status->ipaddr != 0xFFFFFFFF) {
+            byteArray = env->NewByteArray(4);
+            ALOG_ASSERT(byteArray, "Native could not create new byte[]");
+            env->SetByteArrayRegion(byteArray, 0, 4, (const jbyte *)agps_status->ipaddr);
+        }
+    }
 #endif
-    else
-        ipaddr = 0xFFFFFFFF;
-    env->CallVoidMethod(mCallbacksObj, method_reportAGpsStatus,
-                        agps_status->type, agps_status->status, ipaddr);
+    env->CallVoidMethod(mCallbacksObj,
+                        method_reportAGpsStatus,
+                        agps_status->type,
+                        agps_status->status,
+                        byteArray,
+                        byteArray,
+                        ssid_string,
+                        password_string);
+
     checkAndClearExceptionFromCallback(env, __FUNCTION__);
     
     if (byteArray != NULL) {
@@ -523,7 +530,7 @@ static void android_location_GpsLocationProvider_agps_data_conn_open(JNIEnv* env
     }
     const char *apnStr = env->GetStringUTFChars(apn, NULL);
 #ifdef NEW_QC_GPS
-    sAGpsInterface->data_conn_open(0, apnStr, 0);
+    sAGpsInterface->data_conn_open(agpsType, apnStr, bearerType);
 #else
     sAGpsInterface->data_conn_open(apnStr);
 #endif
@@ -539,7 +546,7 @@ static void android_location_GpsLocationProvider_agps_data_conn_closed(JNIEnv* e
         return;
     }
 #ifdef NEW_QC_GPS
-    sAGpsInterface->data_conn_closed(0);
+    sAGpsInterface->data_conn_closed(agpsType);
 #else
     sAGpsInterface->data_conn_closed();
 #endif
@@ -553,7 +560,7 @@ static void android_location_GpsLocationProvider_agps_data_conn_failed(JNIEnv* e
         return;
     }
 #ifdef NEW_QC_GPS
-    sAGpsInterface->data_conn_failed(0);
+    sAGpsInterface->data_conn_failed(agpsType);
 #else
     sAGpsInterface->data_conn_failed();
 #endif
