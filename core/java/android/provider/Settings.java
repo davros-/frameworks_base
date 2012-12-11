@@ -3617,6 +3617,14 @@ public final class Settings {
          * @hide
          */
         public static final String NAVIGATION_BAR_WIDTH = "navigation_bar_width";
+
+	/**
+         * boolean value. toggles using arrow key locations on nav bar
+         * as left and right dpad keys
+         * @hide
+         */
+        public static final String NAVIGATION_BAR_MENU_ARROW_KEYS = "navigation_bar_menu_arrow_keys";
+
     }
 
     /**
