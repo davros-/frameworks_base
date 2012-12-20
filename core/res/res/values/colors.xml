@@ -46,7 +46,7 @@
     <color name="bright_foreground_light_disabled">#80000000</color>
     <color name="bright_foreground_dark_inverse">@android:color/bright_foreground_light</color>
     <color name="bright_foreground_light_inverse">@android:color/bright_foreground_dark</color>
-    <color name="dim_foreground_dark">#33b5e5</color>
+    <color name="dim_foreground_dark">#bebebe</color>
     <color name="dim_foreground_dark_disabled">#80bebebe</color>
     <color name="dim_foreground_dark_inverse">#323232</color>
     <color name="dim_foreground_dark_inverse_disabled">#80323232</color>
@@ -54,7 +54,7 @@
     <color name="dim_foreground_light">#323232</color>
     <color name="dim_foreground_light_disabled">#80323232</color>
     <color name="dim_foreground_light_inverse">#bebebe</color>
-    <color name="dim_foreground_light_inverse_disabled">#ff33b5e5</color>
+    <color name="dim_foreground_light_inverse_disabled">#80bebebe</color>
     <color name="hint_foreground_light">#808080</color>
     <color name="highlighted_text_dark">#9983CC39</color>
     <color name="highlighted_text_light">#9983CC39</color>
