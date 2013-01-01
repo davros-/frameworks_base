@@ -40,20 +40,19 @@ public class Prefs {
         return context.getSharedPreferences(Prefs.SHARED_PREFS_NAME, Context.MODE_PRIVATE).edit();
     }
 
-<<<<<<< HEAD
     public static void setLastFastChargeState(Context context, boolean enabled) {
         edit(context).putBoolean(LAST_FCHARGE_STATE, enabled).commit();
     }
 
     public static boolean getLastFastChargeState(Context context) {
         return read(context).getBoolean(LAST_FCHARGE_STATE, false);
-=======
+    }
+
     public static void setLastBatteryLevel(Context context, int level) {
         edit(context).putInt(LAST_BATTERY_LEVEL, level).commit();
     }
 
     public static int getLastBatteryLevel(Context context) {
         return read(context).getInt(LAST_BATTERY_LEVEL, 50);
->>>>>>> b888d34... SystemUI: Battery Bar
     }
 }
