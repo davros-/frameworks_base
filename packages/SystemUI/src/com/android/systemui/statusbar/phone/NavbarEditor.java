@@ -366,8 +366,7 @@ public class NavbarEditor implements OnTouchListener {
             View cView = viewParent.getChildAt(v);
             if (cView instanceof KeyButtonView) {
                 View nextPadding = viewParent.getChildAt(v+1);
-                String curTag = (String) cView.getTag();
-                             if (nextPadding != null) {
+                if (nextPadding != null) {
                     View nextKey = viewParent.getChildAt(v+2);
                     String nextTag = NAVBAR_EMPTY;
                     if (nextKey != null) {
