@@ -384,7 +384,6 @@ public class NavbarEditor implements OnTouchListener {
                             }
                         }
                         sCount--;
-
                     } else {
                         nextPadding.setVisibility(View.GONE);
                     }
@@ -395,6 +394,7 @@ public class NavbarEditor implements OnTouchListener {
 
     protected void updateLowLights(View current) {
         ViewGroup lowLights = (ViewGroup) current.findViewById(R.id.lights_out);
+        adjustOuterPadding((ViewGroup) lowLights.getParent());
         int totalViews = lowLights.getChildCount();
         int visibleCount = NavbarEditor.visibleCount;
         for (int v = 0;v<totalViews;v++) {
