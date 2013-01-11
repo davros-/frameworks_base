@@ -2685,7 +2685,20 @@ public final class Settings {
         /**
          * @hide
          */
+<<<<<<< HEAD
         public static final String STATUSBAR_BATTERY_BAR_STYLE = "statusbar_battery_bar_style";
+=======
+        public static final String POINTER_SPEED = "pointer_speed";
+        
+        /**  
+         * Allows to show the background activity back the lockscreen
+         * @hide
+         */
+        public static final String LOCKSCREEN_SEE_THROUGH = "lockscreen_see_through";
+
+        /** @hide */
+        public static final String STATUS_BAR_BATTERY = "status_bar_battery";
+>>>>>>> 346d4b3... add transparent lockscreen
 
         /**
          * @hide
