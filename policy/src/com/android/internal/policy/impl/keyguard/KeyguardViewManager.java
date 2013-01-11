@@ -232,7 +232,7 @@ public class KeyguardViewManager {
 
             mKeyguardHost = new ViewManagerHost(mContext);
 
-           setKeyguardParams()
+           setKeyguardParams();
            mViewManager.addView(mKeyguardHost, mWindowLayoutParams);
         }
 
