@@ -1983,11 +1983,7 @@ public final class WebViewCore {
             mEventHub.sendMessageAtFrontOfQueue(
                     Message.obtain(null, EventHub.DESTROY));
             mEventHub.blockMessages();
-<<<<<<< HEAD
-        }
-=======
        }
->>>>>>> 182f679... memopry leak due to bad destroy sequence from google master(hopefully fixes the memory leak weve had since 4.1.2
     }
 
     //-------------------------------------------------------------------------
