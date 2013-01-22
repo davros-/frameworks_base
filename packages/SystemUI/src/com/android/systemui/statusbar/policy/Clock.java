@@ -270,9 +270,6 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
         else
             setVisibility(View.GONE);
     }
-<<<<<<< HEAD
-}
-=======
 
     private void collapseStartActivity(Intent what) {
         // collapse status bar
@@ -312,4 +309,3 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
     }
 }
 
->>>>>>> 0383507... port statusbar clock and custom carrier label, working
