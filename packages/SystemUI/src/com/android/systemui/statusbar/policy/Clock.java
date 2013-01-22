@@ -53,17 +53,10 @@ import com.android.internal.R;
  * minutes.
  */
 public class Clock extends TextView {
-<<<<<<< HEAD
-    protected boolean mAttached;
-    protected Calendar mCalendar;
-    protected String mClockFormatString;
-    protected SimpleDateFormat mClockFormat;
-=======
     private boolean mAttached;
     private Calendar mCalendar;
     private String mClockFormatString;
     private SimpleDateFormat mClockFormat;
->>>>>>> 676343f... port statusbar weekday and custom carrier label take 1)
 
     private static final int AM_PM_STYLE_NORMAL  = 0;
     private static final int AM_PM_STYLE_SMALL   = 1;
@@ -95,14 +88,6 @@ public class Clock extends TextView {
 
     public Clock(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-<<<<<<< HEAD
-
-        mHandler = new Handler();
-        SettingsObserver settingsObserver = new SettingsObserver(mHandler);
-        settingsObserver.observe();
-        updateSettings();
-=======
->>>>>>> 676343f... port statusbar weekday and custom carrier label take 1)
     }
 
     @Override
@@ -210,25 +195,6 @@ public class Clock extends TextView {
                 }
             }
         }
-<<<<<<< HEAD
- 
-        return result;
-
-    }
-
-    protected void updateSettings(){
-        ContentResolver resolver = mContext.getContentResolver();
-
-        mAmPmStyle = (Settings.System.getInt(resolver,
-                Settings.System.STATUS_BAR_AM_PM, 2));
-
-        if (mAmPmStyle != AM_PM_STYLE) {
-            AM_PM_STYLE = mAmPmStyle;
-            mClockFormatString = "";
-
-            if (mAttached) {
-                updateClock();
-=======
         if (mWeekdayStyle != WEEKDAY_STYLE_NORMAL) {
             if (todayIs != null) {
                 if (mWeekdayStyle == WEEKDAY_STYLE_GONE) {
@@ -240,7 +206,6 @@ public class Clock extends TextView {
                                           Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
                     }
                 }
->>>>>>> 676343f... port statusbar weekday and custom carrier label take 1)
             }
         }
         return formatted;
@@ -277,8 +242,6 @@ public class Clock extends TextView {
     		
     	return todayIs;
     }
-<<<<<<< HEAD
-=======
     
     protected class SettingsObserver extends ContentObserver {
         SettingsObserver(Handler handler) {
@@ -338,7 +301,4 @@ public class Clock extends TextView {
         else
             setVisibility(View.GONE);
     }
->>>>>>> 676343f... port statusbar weekday and custom carrier label take 1)
 }
-
-
