@@ -2786,6 +2786,16 @@ public final class Settings {
         public static final String STATUS_BAR_BATTERY = "status_bar_battery";
 
         /**
+         * @hide
+         */
+        public static final String SYSTEM_DISABLE_LOW_BATTERY_WARNING = "eos_system_disable_low_battery_warning";
+
+        /**
+         * @hide
+         */
+        public static final int SYSTEM_DISABLE_LOW_BATTERY_WARNING_DEF = 0;
+
+        /**
          * Whether to show the clock in status bar
          * of the stock battery icon
          * 0: don't show the clock
