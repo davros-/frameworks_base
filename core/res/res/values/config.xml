@@ -1051,11 +1051,6 @@
     <!-- Disable the home key unlock setting -->
     <bool name="config_disableHomeUnlockSetting">true</bool>
 
-<<<<<<< HEAD
-    <!-- empty string to disable, or like: /sys/kernel/fast_charge/force_fast_charge
-         it is disabled by default so devices need to add an overlay to enable-->
-    <string name="config_fastChargePath" translatable="false"></string>
-=======
     <!-- Hardware 'face' keys present on the device, stored as a bit field.
          This integer should equal the sum of the corresponding value for each
          of the following keys present:
@@ -1086,5 +1081,4 @@
          applied. -->
     <bool name="config_hasRemovableLid">false</bool>
 
->>>>>>> 6585ec7... Add support for external dock batteries
 </resources>
