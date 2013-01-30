@@ -248,14 +248,22 @@ public class KeyButtonView extends ImageView {
                         ObjectAnimator.ofFloat(this, "glowAlpha", 1f),
                         ObjectAnimator.ofFloat(this, "glowScale", GLOW_MAX_SCALE_FACTOR)
                     );
+<<<<<<< HEAD
                     as.setDuration(durationSpeedOff);
+=======
+                    as.setDuration(50);
+>>>>>>> 7558cca... Revert "Speed up navbar glow animation"
                 } else {
                     as.playTogether(
                         ObjectAnimator.ofFloat(this, "glowAlpha", 0f),
                         ObjectAnimator.ofFloat(this, "glowScale", 1f),
                         ObjectAnimator.ofFloat(this, "drawingAlpha", BUTTON_QUIESCENT_ALPHA)
                     );
+<<<<<<< HEAD
                     as.setDuration(durationSpeedOn);
+=======
+                    as.setDuration(500);
+>>>>>>> 7558cca... Revert "Speed up navbar glow animation"
                 }
                 as.start();
             }
