@@ -32,10 +32,6 @@ import android.os.SystemClock;
 import android.os.ServiceManager;
 import android.util.AttributeSet;
 import android.view.accessibility.AccessibilityEvent;
-<<<<<<< HEAD
-=======
-=======
->>>>>>> parent of f7a88e8... Revert "Add NavBar Glow, Alpha mods, etc"
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.hardware.input.InputManager;
