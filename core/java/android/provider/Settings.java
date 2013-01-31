@@ -3415,7 +3415,11 @@ public final class Settings {
          *  we always vibrate, even if no vibration was specified
          */
         public static final String NOTIFICATION_CONVERT_SOUND_TO_VIBRATION = "convert_sound_to_vibration";
+<<<<<<< HEAD
          /** @hide
+=======
+         * @hide
+>>>>>>> parent of c553936... Revert "Make policy change to allow changing of height/width (1/2)"
          */
         public static final String NAVIGATION_BAR_SHOW = "navigation_bar_show" ;
 
@@ -3437,6 +3441,7 @@ public final class Settings {
          */
         public static final String NAVIGATION_BAR_WIDTH = "navigation_bar_width";
 
+<<<<<<< HEAD
         /**
          * Navigation bar Alpha
          * @hide
@@ -3465,6 +3470,8 @@ public final class Settings {
         public static final String[] NAVIGATION_BAR_GLOW_DURATION = new String[] {
             "navigation_bar_glow_duration_off", "navigation_bar_glow_duration_on" };
 
+=======
+>>>>>>> parent of c553936... Revert "Make policy change to allow changing of height/width (1/2)"
     }
 
     /**
