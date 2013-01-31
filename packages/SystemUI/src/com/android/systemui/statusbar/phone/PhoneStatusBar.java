@@ -2582,6 +2582,13 @@ public class PhoneStatusBar extends BaseStatusBar {
         }
     }
 
+    protected void updateSettings() {
+        ContentResolver cr = mContext.getContentResolver();
+
+        mCurrentUIMode = Settings.System.getInt(cr,
+                Settings.System.CURRENT_UI_MODE, 0);
+    }
+
     public boolean skipToSettingsPanel() {
         if (mPile == null || mNotificationData == null) return false;
 
@@ -2604,16 +2611,5 @@ public class PhoneStatusBar extends BaseStatusBar {
             return true;
 
         return false;
-        }
-        public void startObserving() {
-            final ContentResolver cr = mContext.getContentResolver();
-	}
-
-        protected void updateSettings() {
-            ContentResolver cr = mContext.getContentResolver();
-
-            mCurrentUIMode = Settings.System.getInt(cr,
-                    Settings.System.CURRENT_UI_MODE, 0);
-        }
     }
 }
