@@ -1219,19 +1219,11 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     Settings.System.NAVIGATION_BAR_SHOW, showByDefault) == 1;
 
             /*
-<<<<<<< HEAD
-	    * at first boot up, we need to make sure navbar gets created
-	    * (or obey framework setting).
-	    * this should quickly get over-ridden by the settings observer
-	    * if it was disabled by the user.
-	    */
-=======
              * at first boot up, we need to make sure navbar gets created
              * (or obey framework setting).
              * this should quickly get over-ridden by the settings observer	
              * if it was disabled by the user.
             */
->>>>>>> 947e65d... Port Forward: NavBar Customization
             if (mNavBarFirstBootFlag) {
                 mHasNavigationBar = (showByDefault == 1);
                 mNavBarFirstBootFlag = false;

@@ -25,12 +25,9 @@ import android.animation.LayoutTransition;
 import android.app.StatusBarManager;
 import android.content.ContentResolver;
 import android.content.Context;
-<<<<<<< HEAD
-=======
 import android.content.res.Configuration;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
->>>>>>> 947e65d... Port Forward: NavBar Customization
 import android.content.res.Resources;
 import android.database.ContentObserver;
 import android.graphics.Point;
