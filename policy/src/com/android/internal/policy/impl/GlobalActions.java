@@ -113,11 +113,8 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
     private Action mSilentModeAction;
     private ToggleAction mAirplaneModeOn;
-<<<<<<< HEAD
     private ToggleAction mExpandDesktopModeOn;
-=======
     private NavBarAction mNavBarHideToggle;
->>>>>>> e71507e... SysUI:  NavBar & Widgets rollup [1/2][WIP]
 
     private MyAdapter mAdapter;
 
@@ -228,7 +225,6 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             mSilentModeAction = new SilentModeTriStateAction(mContext, mAudioManager, mHandler);
         }
 
-<<<<<<< HEAD
         mExpandDesktopModeOn = new ToggleAction(
                 R.drawable.ic_lock_expanded_desktop,
                 R.drawable.ic_lock_expanded_desktop,
@@ -249,12 +245,9 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             }
         };
         onExpandDesktopModeChanged();
-=======
         mEnableNavBarHideToggle= Settings.System.getBoolean(mContext.getContentResolver(),
                 Settings.System.POWER_DIALOG_SHOW_NAVBAR_HIDE, false);
         mNavBarHideToggle = new NavBarAction(mHandler);
->>>>>>> e71507e... SysUI:  NavBar & Widgets rollup [1/2][WIP]
-
         mAirplaneModeOn = new ToggleAction(
                 R.drawable.ic_lock_airplane_mode,
                 R.drawable.ic_lock_airplane_mode_off,
