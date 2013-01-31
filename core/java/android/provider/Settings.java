@@ -3415,11 +3415,7 @@ public final class Settings {
          *  we always vibrate, even if no vibration was specified
          */
         public static final String NOTIFICATION_CONVERT_SOUND_TO_VIBRATION = "convert_sound_to_vibration";
-<<<<<<< HEAD
-         /** @hide
-=======
-         * @hide
->>>>>>> parent of c553936... Revert "Make policy change to allow changing of height/width (1/2)"
+        /* @hide
          */
         public static final String NAVIGATION_BAR_SHOW = "navigation_bar_show" ;
 
@@ -3440,38 +3436,6 @@ public final class Settings {
          * @hide
          */
         public static final String NAVIGATION_BAR_WIDTH = "navigation_bar_width";
-
-<<<<<<< HEAD
-        /**
-         * Navigation bar Alpha
-         * @hide
-         */
-        public static final String NAVIGATION_BAR_BUTTON_ALPHA = "navigation_bar_button_alpha";
-    
-        /**
-         * @hide
-         */
-        public static final String NAVIGATION_BAR_TINT = "navigation_bar_tint";
-
-        /**
-         * @hide
-         */
-        public static final String NAVIGATION_BAR_GLOW_TINT = "navigation_bar_glow_tint";
-
-        /**
-        * User interface mode. This is used to change from singlepane mode forcing it to
-        * Change into multipane mode. Default is disabled.
-        */
-        public static final String FORCE_DUAL_PANEL = "force_dualpanel";
-
-        /**
-         * @hide
-         */
-        public static final String[] NAVIGATION_BAR_GLOW_DURATION = new String[] {
-            "navigation_bar_glow_duration_off", "navigation_bar_glow_duration_on" };
-
-=======
->>>>>>> parent of c553936... Revert "Make policy change to allow changing of height/width (1/2)"
     }
 
     /**
