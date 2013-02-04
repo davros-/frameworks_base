@@ -21,18 +21,6 @@ import android.app.StatusBarManager;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.Resources.NotFoundException;
-<<<<<<< HEAD
-import android.database.ContentObserver;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
-import android.os.Broadcaster;
-import android.os.Handler;
-import android.os.UserHandle;
-import android.provider.Settings;
-=======
->>>>>>> parent of 3908496... transparent statusbar
 import android.util.AttributeSet;
 import android.util.Slog;
 import android.view.MotionEvent;
@@ -67,17 +55,6 @@ public class PhoneStatusBarView extends PanelBar {
             mSettingsPanelDragzoneFrac = 0f;
         }
         mFullWidthNotifications = mSettingsPanelDragzoneFrac <= 0f;
-<<<<<<< HEAD
-        mActivityManager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
-        mKeyguardManager = (KeyguardManager) mContext.getSystemService(Context.KEYGUARD_SERVICE);
-        SettingsObserver settingsObserver = new SettingsObserver(new Handler());
-        settingsObserver.observe();
-        Drawable bg = mContext.getResources().getDrawable(R.drawable.status_bar_background);
-        if(bg instanceof ColorDrawable) {
-            setBackground(new BackgroundAlphaColorDrawable(((ColorDrawable) bg).getColor()));
-        }
-=======
->>>>>>> parent of 3908496... transparent statusbar
     }
 
     public void setBar(PhoneStatusBar bar) {

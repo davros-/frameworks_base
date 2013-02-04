@@ -344,13 +344,7 @@ public class NavigationBarView extends LinearLayout {
         }
         Drawable bg = mContext.getResources().getDrawable(R.drawable.nav_bar_bg);
         if(bg instanceof ColorDrawable) {
-<<<<<<< HEAD
-            BackgroundAlphaColorDrawable bacd = new BackgroundAlphaColorDrawable(
-                    mNavigationBarColor > 0 ? mNavigationBarColor : ((ColorDrawable) bg).getColor());
-            setBackground(bacd);
-=======
             setBackground(new NavigationBarBackgroundDrawable(((ColorDrawable) bg).getColor()));
->>>>>>> parent of 3908496... transparent statusbar
         }
         setBackgroundAlpha(mNavigationBarAlpha);
     }
@@ -1000,19 +994,6 @@ public class NavigationBarView extends LinearLayout {
         Drawable bg = getBackground();
         if(bg == null) return;
 
-<<<<<<< HEAD
-        if(bg instanceof BackgroundAlphaColorDrawable) {
-         // if there's a custom color while the lockscreen is on, clear it momentarily, otherwise it won't match.
-            if(mNavigationBarColor > 0) {
-                if(isKeyguardEnabled()) {
-                    ((BackgroundAlphaColorDrawable) bg).setBgColor(-1);
-                } else {
-                    ((BackgroundAlphaColorDrawable) bg).setBgColor(mNavigationBarColor);
-                }
-            }
-        }
-        int a = Math.round(alpha * 255);
-=======
         int a = (int) (alpha * 255);
         if(bg instanceof NavigationBarBackgroundDrawable) {
             int bgColor = ((ColorDrawable)bg).getColor();
@@ -1023,7 +1004,6 @@ public class NavigationBarView extends LinearLayout {
         } else {
              // probably a picture
         }
->>>>>>> parent of 3908496... transparent statusbar
         bg.setAlpha(a);
     }
 
