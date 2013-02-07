@@ -107,7 +107,6 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
 
     public Clock(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-<<<<<<< HEAD
 
         mHandler = new Handler();
         SettingsObserver settingsObserver = new SettingsObserver(mHandler);
@@ -117,8 +116,6 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
             setOnLongClickListener(this);
         }
         updateSettings();
-=======
->>>>>>> 704af22... PIE: this is an all inclusive commit for pie. Includes everything needed for pie'
     }
 
     @Override

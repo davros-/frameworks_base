@@ -86,11 +86,8 @@ import com.android.systemui.R;
 import com.android.systemui.statusbar.BaseStatusBar;
 import com.android.systemui.statusbar.CommandQueue;
 import com.android.systemui.statusbar.GestureRecorder;
-<<<<<<< HEAD
 import com.android.systemui.statusbar.NavigationBarView;
-=======
 import com.android.systemui.statusbar.phone.NavigationBarView;
->>>>>>> 704af22... PIE: this is an all inclusive commit for pie. Includes everything needed for pie'
 import com.android.systemui.statusbar.NotificationData;
 import com.android.systemui.statusbar.NotificationData.Entry;
 import com.android.systemui.statusbar.SignalClusterView;
