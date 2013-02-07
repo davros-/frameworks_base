@@ -55,6 +55,7 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
     private String mClockFormatString;
     private SimpleDateFormat mClockFormat;
 
+
     public static final int AM_PM_STYLE_NORMAL  = 0;
     public static final int AM_PM_STYLE_SMALL   = 1;
     public static final int AM_PM_STYLE_GONE    = 2;
@@ -106,6 +107,7 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
 
     public Clock(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+<<<<<<< HEAD
 
         mHandler = new Handler();
         SettingsObserver settingsObserver = new SettingsObserver(mHandler);
@@ -115,6 +117,8 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
             setOnLongClickListener(this);
         }
         updateSettings();
+=======
+>>>>>>> 704af22... PIE: this is an all inclusive commit for pie. Includes everything needed for pie'
     }
 
     @Override
@@ -168,12 +172,12 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
         }
     };
 
-    protected final void updateClock() {
+    final void updateClock() {
         mCalendar.setTimeInMillis(System.currentTimeMillis());
         setText(getSmallTime());
     }
 
-    protected final CharSequence getSmallTime() {
+    private final CharSequence getSmallTime() {
         Context context = getContext();
         boolean b24 = DateFormat.is24HourFormat(context);
         int res;
@@ -242,6 +246,10 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
             }
         }
         return formatted;
+    }
+
+    private void updateParameters() {
+        mClockFormatString = null;
     }
 
     protected void updateSettings(){
