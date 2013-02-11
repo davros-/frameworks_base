@@ -1983,14 +1983,11 @@ public class PhoneStatusBar extends BaseStatusBar {
     }
 
     public void topAppWindowChanged(boolean showMenu) {
-<<<<<<< HEAD
 
         if (mPieControlPanel != null)
             mPieControlPanel.setMenu(showMenu);
 
-=======
         mStatusBarView.updateBackgroundAlpha();
->>>>>>> parent of c353c66... Revert "transparent statusbar"
         if (DEBUG) {
             Slog.d(TAG, (showMenu?"showing":"hiding") + " the MENU button");
         }
