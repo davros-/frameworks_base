@@ -30,11 +30,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.database.ContentObserver;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.PixelFormat;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -344,13 +340,9 @@ public class NavigationBarView extends LinearLayout {
         }
         Drawable bg = mContext.getResources().getDrawable(R.drawable.nav_bar_bg);
         if(bg instanceof ColorDrawable) {
-<<<<<<< HEAD
             BackgroundAlphaColorDrawable bacd = new BackgroundAlphaColorDrawable(
                     mNavigationBarColor > 0 ? mNavigationBarColor : ((ColorDrawable) bg).getColor());
             setBackground(bacd);
-=======
-            setBackground(new NavigationBarBackgroundDrawable(((ColorDrawable) bg).getColor()));
->>>>>>> parent of 3908496... transparent statusbar
         }
         setBackgroundAlpha(mNavigationBarAlpha);
     }
@@ -1000,7 +992,6 @@ public class NavigationBarView extends LinearLayout {
         Drawable bg = getBackground();
         if(bg == null) return;
 
-<<<<<<< HEAD
         if(bg instanceof BackgroundAlphaColorDrawable) {
          // if there's a custom color while the lockscreen is on, clear it momentarily, otherwise it won't match.
             if(mNavigationBarColor > 0) {
@@ -1012,18 +1003,6 @@ public class NavigationBarView extends LinearLayout {
             }
         }
         int a = Math.round(alpha * 255);
-=======
-        int a = (int) (alpha * 255);
-        if(bg instanceof NavigationBarBackgroundDrawable) {
-            int bgColor = ((ColorDrawable)bg).getColor();
-            int r = Color.red(bgColor);
-            int g = Color.green(bgColor);
-            int b = Color.blue(bgColor);
-            ((NavigationBarBackgroundDrawable) bg).setBgColor(Color.argb(a,r,g,b));
-        } else {
-             // probably a picture
-        }
->>>>>>> parent of 3908496... transparent statusbar
         bg.setAlpha(a);
     }
 
@@ -1085,35 +1064,5 @@ public class NavigationBarView extends LinearLayout {
 
     private void postCheckForInvalidLayout(final String how) {
         mHandler.obtainMessage(MSG_CHECK_INVALID_LAYOUT, 0, 0, how).sendToTarget();
-    }
-
-    private class NavigationBarBackgroundDrawable extends ColorDrawable {
-        int mBgColor;
-
-        public NavigationBarBackgroundDrawable(int bgColor) {
-            mBgColor = bgColor;
-        }
-
-        public void setBgColor(int color) {
-            mBgColor = color;
-        }
-
-        @Override
-        public void draw(Canvas canvas) {
-            canvas.drawColor(mBgColor, PorterDuff.Mode.SRC);
-        }
-
-        @Override
-        public void setAlpha(int alpha) {
-        }
-
-        @Override
-        public void setColorFilter(ColorFilter cf) {
-        }
-
-        @Override
-        public int getOpacity() {
-            return PixelFormat.TRANSLUCENT;
-        }
     }
 }
