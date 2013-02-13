@@ -2803,6 +2803,18 @@ public final class Settings {
          */
         public static final int SYSTEM_DISABLE_LOW_BATTERY_WARNING_DEF = 0;
 
+        /*
+         * Setting for clock color
+         * @hide
+         */
+        public static final String STATUSBAR_CLOCK_COLOR = "statusbar_clock_color";
+
+        /**
+         * Setting for clock color
+         * @hide
+         */
+        public static final String STATUSBAR_EXPANDED_CLOCK_COLOR = "statusbar_expanded_clock_color";
+
         /**
          * Whether to show the clock in status bar
          * of the stock battery icon
