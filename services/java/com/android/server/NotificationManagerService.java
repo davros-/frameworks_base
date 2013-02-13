@@ -119,11 +119,6 @@ public class NotificationManagerService extends INotificationManager.Stub
     private static final int NOTIFICATION_PRIORITY_MULTIPLIER = 10;
     private static final int SCORE_DISPLAY_THRESHOLD = Notification.PRIORITY_MIN * NOTIFICATION_PRIORITY_MULTIPLIER;
 
-    // Notifications with scores below this will not interrupt the user, either via LED or
-    // sound or vibration
-    private static final int SCORE_INTERRUPTION_THRESHOLD =
-            Notification.PRIORITY_LOW * NOTIFICATION_PRIORITY_MULTIPLIER;
-
     private static final boolean ENABLE_BLOCKED_NOTIFICATIONS = true;
     private static final boolean ENABLE_BLOCKED_TOASTS = true;
 
@@ -673,19 +668,6 @@ public class NotificationManagerService extends INotificationManager.Stub
         }
     }
 
-    static long[] getLongArray(Resources r, int resid, int maxlen, long[] def) {
-        int[] ar = r.getIntArray(resid);
-        if (ar == null) {
-            return def;
-        }
-        final int len = ar.length > maxlen ? maxlen : ar.length;
-        long[] out = new long[len];
-        for (int i=0; i<len; i++) {
-            out[i] = ar[i];
-        }
-        return out;
-    }
-
     class QuietHoursSettingsObserver extends ContentObserver {
         QuietHoursSettingsObserver(Handler handler) {
             super(handler);
@@ -729,6 +711,20 @@ public class NotificationManagerService extends INotificationManager.Stub
                     Settings.System.QUIET_HOURS_DIM, 0) != 0;
         }
     }
+
+    static long[] getLongArray(Resources r, int resid, int maxlen, long[] def) {
+        int[] ar = r.getIntArray(resid);
+        if (ar == null) {
+            return def;
+        }
+        final int len = ar.length > maxlen ? maxlen : ar.length;
+        long[] out = new long[len];
+        for (int i=0; i<len; i++) {
+            out[i] = ar[i];
+        }
+        return out;
+    }
+
     NotificationManagerService(Context context, StatusBarManagerService statusBar,
             LightsService lights)
     {
@@ -1118,9 +1114,6 @@ public class NotificationManagerService extends INotificationManager.Stub
             return;
         }
 
-        // Should this notification make noise, vibe, or use the LED?
-        final boolean canInterrupt = (score >= SCORE_INTERRUPTION_THRESHOLD);
-
         synchronized (mNotificationList) {
             final boolean inQuietHours = inQuietHours();
 
@@ -1174,8 +1167,7 @@ public class NotificationManagerService extends INotificationManager.Stub
                     long identity = Binder.clearCallingIdentity();
                     try {
                         r.statusBarKey = mStatusBar.addNotification(n);
-                        if ((n.notification.flags & Notification.FLAG_SHOW_LIGHTS) != 0
-                                && canInterrupt) {
+                        if ((n.notification.flags & Notification.FLAG_SHOW_LIGHTS) != 0) {
                             mAttentionLight.pulse();
                         }
                     }
@@ -1218,7 +1210,6 @@ public class NotificationManagerService extends INotificationManager.Stub
                         && (notification.flags & Notification.FLAG_ONLY_ALERT_ONCE) != 0 ))
                     && (r.userId == UserHandle.USER_ALL ||
                         (r.userId == userId && r.userId == currentUser))
-                    && canInterrupt
                     && mSystemReady) {
 
                 final AudioManager audioManager = (AudioManager) mContext
@@ -1229,33 +1220,12 @@ public class NotificationManagerService extends INotificationManager.Stub
                     (notification.defaults & Notification.DEFAULT_SOUND) != 0;
                 if (!(inQuietHours && mQuietHoursMute)
                         && (useDefaultSound || notification.sound != null)) {
-                Uri soundUri = null;
-                boolean hasValidSound = false;
+                    Uri uri;
                     if (useDefaultSound) {
-                    soundUri = Settings.System.DEFAULT_NOTIFICATION_URI;
-
-                    // check to see if the default notification sound is silent
-                    ContentResolver resolver = mContext.getContentResolver();
-                    hasValidSound = Settings.System.getString(resolver,
-                           Settings.System.NOTIFICATION_SOUND) != null;
-                } else if (notification.sound != null) {
-                    soundUri = notification.sound;
-                    hasValidSound = (soundUri != null);
-                }
-
-                if (useDefaultSound) {
-                    soundUri = Settings.System.DEFAULT_NOTIFICATION_URI;
-
-                    // check to see if the default notification sound is silent
-                    ContentResolver resolver = mContext.getContentResolver();
-                    hasValidSound = Settings.System.getString(resolver,
-                           Settings.System.NOTIFICATION_SOUND) != null;
-                } else if (notification.sound != null) {
-                    soundUri = notification.sound;
-                    hasValidSound = (soundUri != null);
-                }
-
-                if (hasValidSound) {
+                        uri = Settings.System.DEFAULT_NOTIFICATION_URI;
+                    } else {
+                        uri = notification.sound;
+                    }
                     boolean looping = (notification.flags & Notification.FLAG_INSISTENT) != 0;
                     int audioStreamType;
                     if (notification.audioStreamType >= 0) {
@@ -1272,7 +1242,7 @@ public class NotificationManagerService extends INotificationManager.Stub
                         try {
                             final IRingtonePlayer player = mAudioService.getRingtonePlayer();
                             if (player != null) {
-                                player.playAsync(soundUri, user, looping, audioStreamType);
+                                player.playAsync(uri, user, looping, audioStreamType);
                             }
                         } catch (RemoteException e) {
                         } finally {
@@ -1289,7 +1259,6 @@ public class NotificationManagerService extends INotificationManager.Stub
                 // and no other vibration is specified, we fall back to vibration
                 final boolean convertSoundToVibration =
                            !hasCustomVibrate
-                        && hasValidSound
                         && (useDefaultSound || notification.sound != null)
                         && (audioManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE)
                         && (Settings.System.getBoolean(mContext.getContentResolver(), Settings.System.NOTIFICATION_CONVERT_SOUND_TO_VIBRATION, false));
@@ -1298,8 +1267,8 @@ public class NotificationManagerService extends INotificationManager.Stub
                 final boolean useDefaultVibrate =
                    (notification.defaults & Notification.DEFAULT_VIBRATE) != 0;
                 if (!(inQuietHours && mQuietHoursStill)
-                        && (useDefaultVibrate || notification.vibrate != null))
-
+                        && (useDefaultVibrate || convertSoundToVibration || hasCustomVibrate)
+                        && !(audioManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT)) {
                     mVibrateNotification = r;
 
                     if (useDefaultVibrate || convertSoundToVibration) {
@@ -1307,8 +1276,8 @@ public class NotificationManagerService extends INotificationManager.Stub
                         // does not have the VIBRATE permission.
                         long identity = Binder.clearCallingIdentity();
                         try {
-                            mVibrator.vibrate(useDefaultVibrate ? mDefaultVibrationPattern
-                                                                : mFallbackVibrationPattern,
+                            mVibrator.vibrate(convertSoundToVibration ? mFallbackVibrationPattern
+                                                                      : mDefaultVibrationPattern,
                                 ((notification.flags & Notification.FLAG_INSISTENT) != 0) ? 0: -1);
                         } finally {
                             Binder.restoreCallingIdentity(identity);
