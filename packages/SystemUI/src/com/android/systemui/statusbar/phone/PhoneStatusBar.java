@@ -1983,11 +1983,7 @@ public class PhoneStatusBar extends BaseStatusBar {
     }
 
     public void topAppWindowChanged(boolean showMenu) {
-<<<<<<< HEAD
-        mTransparencyManager.update();
-=======
         mStatusBarView.updateBackgroundAlpha();
->>>>>>> de2aebc... Revert "SystemUI: transparency control overhaul"
 
         if (mPieControlPanel != null)
             mPieControlPanel.setMenu(showMenu);
