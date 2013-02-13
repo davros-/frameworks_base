@@ -22,6 +22,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import com.android.internal.app.HeavyWeightSwitcherActivity;
 import com.android.internal.os.BatteryStatsImpl;
 import com.android.server.am.ActivityManagerService.PendingActivityLaunch;
+import com.android.server.power.PowerManagerService;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -53,6 +54,7 @@ import android.os.Message;
 import android.os.ParcelFileDescriptor;
 import android.os.PowerManager;
 import android.os.RemoteException;
+import android.os.ServiceManager;
 import android.os.SystemClock;
 import android.os.SystemProperties;
 import android.os.UserHandle;
@@ -412,7 +414,7 @@ final class ActivityStack {
                             Slog.w(TAG, "Launch timeout has expired, giving up wake lock!");
                             mLaunchingActivity.release();
                         }
-                    }
+                    }                    
                 } break;
                 case RESUME_TOP_ACTIVITY_MSG: {
                     synchronized (mService) {
@@ -448,6 +450,7 @@ final class ActivityStack {
             (PowerManager)context.getSystemService(Context.POWER_SERVICE);
         mGoingToSleep = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ActivityManager-Sleep");
         mLaunchingActivity = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ActivityManager-Launch");
+        mPm = (PowerManagerService) ServiceManager.getService("power");
         mLaunchingActivity.setReferenceCounted(false);
     }
 
@@ -1432,6 +1435,9 @@ final class ActivityStack {
     }
 
     final boolean resumeTopActivityLocked(ActivityRecord prev, Bundle options) {
+
+        mPm.cpuBoost(1500000);
+
         // Find the first activity that is not finishing.
         ActivityRecord next = topRunningActivityLocked(null);
 
@@ -2491,6 +2497,8 @@ final class ActivityStack {
             boolean componentSpecified, ActivityRecord[] outActivity) {
 
         int err = ActivityManager.START_SUCCESS;
+
+        mPm.cpuBoost(1500000);
 
         ProcessRecord callerApp = null;
         if (caller != null) {
@@ -3617,9 +3625,9 @@ final class ActivityStack {
 
         // Stop any activities that are scheduled to do so but have been
         // waiting for the next one to start.
-       for (i=0; i<NS; i++) {
-            ActivityRecord r = (ActivityRecord)stops.get(i);
-            synchronized (mService) {
+        synchronized (mService) {
+            for (i=0; i<NS; i++) {
+                ActivityRecord r = (ActivityRecord)stops.get(i);
                 if (r.finishing) {
                     finishCurrentActivityLocked(r, FINISH_IMMEDIATELY, false);
                 } else {
@@ -3631,8 +3639,8 @@ final class ActivityStack {
 
         // Finish any activities that are scheduled to do so but have been
         // waiting for the next one to start.
-        for (i=0; i<NF; i++) {
-            synchronized (mService) {
+        synchronized (mService) {
+            for (i=0; i<NF; i++) {
                 ActivityRecord r = (ActivityRecord)finishes.get(i);
                 activityRemoved = destroyActivityLocked(r, true, false, "finish-idle");
             }
@@ -4770,3 +4778,4 @@ final class ActivityStack {
         mDismissKeyguardOnNextActivity = true;
     }
 }
+
