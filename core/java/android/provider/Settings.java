@@ -2794,6 +2794,7 @@ public final class Settings {
         public static final String STATUS_BAR_BATTERY = "status_bar_battery";
 
         /**
+<<<<<<< HEAD
          * @hide
          */
         public static final String SYSTEM_DISABLE_LOW_BATTERY_WARNING = "eos_system_disable_low_battery_warning";
@@ -2802,6 +2803,18 @@ public final class Settings {
          * @hide
          */
         public static final int SYSTEM_DISABLE_LOW_BATTERY_WARNING_DEF = 0;
+=======
+         * Setting for clock color
+         * @hide
+         */
+        public static final String STATUSBAR_CLOCK_COLOR = "statusbar_clock_color";
+
+        /**
+         * Setting for clock color
+         * @hide
+         */
+        public static final String STATUSBAR_EXPANDED_CLOCK_COLOR = "statusbar_expanded_clock_color";
+>>>>>>> 033cf63... Frameworks: statusbar clock and expanded notification clock color options (1/2)
 
         /**
          * Whether to show the clock in status bar
