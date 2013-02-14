@@ -54,12 +54,14 @@ import android.os.ParcelFileDescriptor;
 import android.os.PowerManager;
 import android.os.RemoteException;
 import android.os.SystemClock;
+import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.util.EventLog;
 import android.util.Log;
 import android.util.Slog;
 import android.view.Display;
 import android.view.WindowManagerPolicy;
+import com.android.internal.app.ActivityTrigger;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -306,6 +308,16 @@ final class ActivityStack {
         }
     }
 
+    private static final ActivityTrigger mActivityTrigger;
+
+    static {
+        if (SystemProperties.QCOM_HARDWARE) {
+            mActivityTrigger = new ActivityTrigger();
+        } else {
+            mActivityTrigger = null;
+        }
+    }
+
     final Handler mHandler = new Handler() {
         //public Handler() {
         //    if (localLOGV) Slog.v(TAG, "Handler started!");
@@ -398,7 +410,7 @@ final class ActivityStack {
                             Slog.w(TAG, "Launch timeout has expired, giving up wake lock!");
                             mLaunchingActivity.release();
                         }
-                    }
+                    }                    
                 } break;
                 case RESUME_TOP_ACTIVITY_MSG: {
                     synchronized (mService) {
@@ -1418,6 +1430,8 @@ final class ActivityStack {
     }
 
     final boolean resumeTopActivityLocked(ActivityRecord prev, Bundle options) {
+
+
         // Find the first activity that is not finishing.
         ActivityRecord next = topRunningActivityLocked(null);
 
@@ -1481,6 +1495,10 @@ final class ActivityStack {
         next.updateOptionsLocked(options);
 
         if (DEBUG_SWITCH) Slog.v(TAG, "Resuming " + next);
+
+        if (mActivityTrigger != null) {
+            mActivityTrigger.activityResumeTrigger(next.intent);
+        }
 
         // If we are currently pausing an activity, then don't do anything
         // until that is done.
@@ -1824,8 +1842,8 @@ final class ActivityStack {
                         }
                         mHistory.add(addPos, r);
                         r.putInHistory();
-                        mService.mWindowManager.addAppToken(addPos, r.appToken, r.task.taskId,
-                                r.info.screenOrientation, r.fullscreen,
+                        mService.mWindowManager.addAppToken(addPos, r.userId, r.appToken,
+                                r.task.taskId, r.info.screenOrientation, r.fullscreen,
                                 (r.info.flags & ActivityInfo.FLAG_SHOW_ON_LOCK_SCREEN) != 0);
                         if (VALIDATE_TOKENS) {
                             validateAppTokensLocked();
@@ -1889,8 +1907,8 @@ final class ActivityStack {
                 mNoAnimActivities.remove(r);
             }
             r.updateOptionsLocked(options);
-            mService.mWindowManager.addAppToken(
-                    addPos, r.appToken, r.task.taskId, r.info.screenOrientation, r.fullscreen,
+            mService.mWindowManager.addAppToken(addPos, r.userId, r.appToken,
+                    r.task.taskId, r.info.screenOrientation, r.fullscreen,
                     (r.info.flags & ActivityInfo.FLAG_SHOW_ON_LOCK_SCREEN) != 0);
             boolean doShow = true;
             if (newTask) {
@@ -1928,8 +1946,8 @@ final class ActivityStack {
         } else {
             // If this is the first activity, don't do any fancy animations,
             // because there is nothing for it to animate on top of.
-            mService.mWindowManager.addAppToken(addPos, r.appToken, r.task.taskId,
-                    r.info.screenOrientation, r.fullscreen,
+            mService.mWindowManager.addAppToken(addPos, r.userId, r.appToken,
+                    r.task.taskId, r.info.screenOrientation, r.fullscreen,
                     (r.info.flags & ActivityInfo.FLAG_SHOW_ON_LOCK_SCREEN) != 0);
             ActivityOptions.abort(options);
         }
@@ -2474,6 +2492,7 @@ final class ActivityStack {
 
         int err = ActivityManager.START_SUCCESS;
 
+
         ProcessRecord callerApp = null;
         if (caller != null) {
             callerApp = mService.getRecordForAppLocked(caller);
@@ -2492,6 +2511,9 @@ final class ActivityStack {
             final int userId = aInfo != null ? UserHandle.getUserId(aInfo.applicationInfo.uid) : 0;
             Slog.i(TAG, "START u" + userId + " {" + intent.toShortString(true, true, true, false)
                     + "} from pid " + (callerApp != null ? callerApp.pid : callingPid));
+            if (mActivityTrigger != null) {
+                mActivityTrigger.activityStartTrigger(intent);
+            }
         }
 
         ActivityRecord sourceRecord = null;
@@ -3596,9 +3618,9 @@ final class ActivityStack {
 
         // Stop any activities that are scheduled to do so but have been
         // waiting for the next one to start.
-       for (i=0; i<NS; i++) {
-            ActivityRecord r = (ActivityRecord)stops.get(i);
-            synchronized (mService) {
+        synchronized (mService) {
+            for (i=0; i<NS; i++) {
+                ActivityRecord r = (ActivityRecord)stops.get(i);
                 if (r.finishing) {
                     finishCurrentActivityLocked(r, FINISH_IMMEDIATELY, false);
                 } else {
@@ -3610,8 +3632,8 @@ final class ActivityStack {
 
         // Finish any activities that are scheduled to do so but have been
         // waiting for the next one to start.
-        for (i=0; i<NF; i++) {
-            synchronized (mService) {
+        synchronized (mService) {
+            for (i=0; i<NF; i++) {
                 ActivityRecord r = (ActivityRecord)finishes.get(i);
                 activityRemoved = destroyActivityLocked(r, true, false, "finish-idle");
             }
@@ -4749,3 +4771,4 @@ final class ActivityStack {
         mDismissKeyguardOnNextActivity = true;
     }
 }
+

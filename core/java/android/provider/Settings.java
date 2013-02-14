@@ -626,6 +626,21 @@ public final class Settings {
     public static final String ACTION_NFCSHARING_SETTINGS =
         "android.settings.NFCSHARING_SETTINGS";
 
+    /**
+     * Activity Action: Show Daydream settings.
+     * <p>
+     * In some cases, a matching Activity may not exist, so ensure you
+     * safeguard against this.
+     * <p>
+     * Input: Nothing.
+     * <p>
+     * Output: Nothing.
+     * @see android.service.dreams.DreamService
+     * @hide
+     */
+    @SdkConstant(SdkConstantType.ACTIVITY_INTENT_ACTION)
+    public static final String ACTION_DREAM_SETTINGS = "android.settings.DREAM_SETTINGS";
+
     // End of Intent actions for Settings
 
     /**
@@ -2620,6 +2635,14 @@ public final class Settings {
         public static final String POINTER_SPEED = "pointer_speed";
 
         /**
+         * Control the display of the action overflow button within app UI.
+         * 0 = use system default
+         * 1 = force on
+         * @hide
+         */
+        public static final String UI_FORCE_OVERFLOW_BUTTON = "ui_force_overflow_button";
+ 
+       /**
          * Use the Notification Power Widget? (Who wouldn't!)
          *
          * @hide
@@ -2795,6 +2818,18 @@ public final class Settings {
          */
         public static final int SYSTEM_DISABLE_LOW_BATTERY_WARNING_DEF = 0;
 
+        /*
+         * Setting for clock color
+         * @hide
+         */
+        public static final String STATUSBAR_CLOCK_COLOR = "statusbar_clock_color";
+
+        /**
+         * Setting for clock color
+         * @hide
+         */
+        public static final String STATUSBAR_EXPANDED_CLOCK_COLOR = "statusbar_expanded_clock_color";
+
         /**
          * Whether to show the clock in status bar
          * of the stock battery icon
@@ -2846,14 +2881,153 @@ public final class Settings {
         public static final String STATUS_BAR_IME_SWITCHER = "status_bar_ime_switcher";
 
          /**
-         * Statusbar State
+         * Navigation bar State
          * @hide
          */
         public static final String EXPANDED_DESKTOP_STATE = "expanded_desktop_state";
 
         /**
+         * statusbar signal text color
+         *
+         * @hide
+         */
+        public static final String STATUSBAR_SIGNAL_TEXT_COLOR = "statusbar_signal_text_color";
+
+        public static final String EXPANDED_DESKTOP_STATUS_BAR_STATE = "expanded_desktop_status_bar_state";
+
+        /*
+         * On or off the Pie.
+         *
+         * @hide
+         */
+        public static final String PIE_CONTROLS = "pie_controls";
+
+        /**
+         * Pie menu, should default to 0 (no, show only when needed)
+         * @hide
+         */
+        public static final String PIE_MENU = "pie_menu";
+
+        /**
+         * Center Pie? Should default to 1 (yes, center)
+         * @hide
+         */
+        public static final String PIE_CENTER = "pie_center";
+
+        /**
+         * Pie search, should default to 1 (yes, show)
+         * @hide
+         */
+        public static final String PIE_SEARCH = "pie_search";
+
+        /*
+         * Pie gap angle, should default to 1
+         * @hide
+         */
+        public static final String PIE_GAP = "pie_gap";
+
+        /**
+         * Pie trigger fraction, should default to 1
+         * @hide
+         */
+        public static final String PIE_TRIGGER = "pie_trigger";
+
+        /**
+         * Location of the pie in the screen
+         * 0 = Gravity.LEFT
+         * 1 = Gravity.TOP
+         * 2 = Gravity.RIGHT
+         * 3 = Gravity.BOTTOM (default)
+         * @hide
+         */
+        public static final String PIE_GRAVITY = "pie_gravity";
+
+        /**
          * Whether to use a separate delay for "slide to unlock" and security
          * lock
+         * Pie status report
+         * 0 = Bare
+         * 1 = Quick
+         * 2 = Default
+         * 3 = Slow
+         * @hide
+         */
+        public static final String PIE_MODE = "pie_mode";
+
+        /**
+         * Pie size fraction
+         * @hide
+         */
+        public static final String PIE_SIZE = "pie_size";
+
+        /**
+         * Pie Notification Ability
+         * @hide
+         */
+        public static final String PIE_NOTIFICATIONS = "pie_notifications";
+
+       // PIE COLORS EVERYWHERE! //
+
+        /**
+         * @hide
+         */
+        public static final String PIE_ENABLE_COLOR = "pie_enable_color";
+
+        /**
+         * @hide
+         */
+        public static final String PIE_JUICE = "pie_juice";
+
+        /**
+         * @hide
+         */
+        public static final String PIE_BUTTON_COLOR = "pie_button_color";
+
+        /**
+         * @hide
+         */
+        public static final String PIE_SNAP_BACKGROUND = "pie_snap_background";
+
+        /**
+         * @hide
+         */
+        public static final String PIE_BACKGROUND = "pie_background";
+
+        /**
+         * @hide
+         */
+        public static final String PIE_SELECT = "pie_select";
+
+        /**
+         * @hide
+         */
+        public static final String PIE_OUTLINES = "pie_outlines";
+
+        /**
+         * @hide
+         */
+        public static final String PIE_STATUS_CLOCK = "pie_status_clock";
+
+        /**
+         * @hide
+         */
+        public static final String PIE_STATUS = "pie_status";
+
+        /**
+         * @hide
+         */
+        public static final String PIE_CHEVRON_LEFT = "pie_chevron_left";
+
+        /**
+         * @hide
+         */
+        public static final String PIE_CHEVRON_RIGHT = "pie_chevron_right";
+
+       // PIE COLORS EVERYWHERE! //
+
+        /**
+         * whether to hide the signal barss
+         *
          * @hide
          */
         public static final String SCREEN_LOCK_SLIDE_DELAY_TOGGLE = "screen_lock_slide_delay_toggle";
@@ -5387,6 +5561,13 @@ public final class Settings {
         public static final String POWER_SOUNDS_ENABLED = "power_sounds_enabled";
 
         /**
+         * URI for the "wireless charging started" sound.
+         * @hide
+         */
+        public static final String WIRELESS_CHARGING_STARTED_SOUND =
+                "wireless_charging_started_sound";
+
+        /**
          * Whether we keep the device on while the device is plugged in.
          * Supported values are:
          * <ul>
@@ -6425,6 +6606,12 @@ public final class Settings {
          * @hide
          */
         public static final String DOCK_AUDIO_MEDIA_ENABLED = "dock_audio_media_enabled";
+
+        /**
+         * Persisted safe headphone volume management state by AudioService
+         * @hide
+         */
+        public static final String AUDIO_SAFE_VOLUME_STATE = "audio_safe_volume_state";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings

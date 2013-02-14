@@ -25,6 +25,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.ContentObserver;
+import android.content.res.Resources;
+import android.graphics.Canvas;
 import android.os.Handler;
 import android.provider.AlarmClock;
 import android.provider.Settings;
@@ -43,17 +45,18 @@ import com.android.internal.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * This widget display an analogic clock with two hands for hours and
- * minutes.
+ * Digital clock for the status bar.
  */
-public class Clock extends TextView implements OnClickListener, OnLongClickListener {
-    private boolean mAttached;
-    private Calendar mCalendar;
-    private String mClockFormatString;
-    private SimpleDateFormat mClockFormat;
+public class Clock extends TextView {
+    protected boolean mAttached;
+    protected Calendar mCalendar;
+    protected String mClockFormatString;
+    protected SimpleDateFormat mClockFormat;
+    private Locale mLocale;
 
     public static final int AM_PM_STYLE_NORMAL  = 0;
     public static final int AM_PM_STYLE_SMALL   = 1;
@@ -74,6 +77,10 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
 
     protected int mClockStyle;
 
+    protected static int mClockColor = com.android.internal.R.color.holo_blue_light;
+    protected static int mExpandedClockColor = com.android.internal.R.color.holo_blue_light;
+    protected static int defaultColor, defaultExpandedColor;
+
     Handler mHandler;
 
     protected class SettingsObserver extends ContentObserver {
@@ -89,6 +96,11 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
                     Settings.System.STATUS_BAR_CLOCK_STYLE), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
 		    Settings.System.STATUSBAR_CLOCK_WEEKDAY), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUSBAR_CLOCK_COLOR), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUSBAR_EXPANDED_CLOCK_COLOR), false, this);
+            updateSettings();
         }
 
         @Override public void onChange(boolean selfChange) {
@@ -129,6 +141,7 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
             filter.addAction(Intent.ACTION_TIME_CHANGED);
             filter.addAction(Intent.ACTION_TIMEZONE_CHANGED);
             filter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
+            filter.addAction(Intent.ACTION_USER_SWITCHED);
 
             getContext().registerReceiver(mIntentReceiver, filter, null, getHandler());
         }
@@ -163,17 +176,23 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
                 if (mClockFormat != null) {
                     mClockFormat.setTimeZone(mCalendar.getTimeZone());
                 }
+            } else if (action.equals(Intent.ACTION_CONFIGURATION_CHANGED)) {
+                final Locale newLocale = getResources().getConfiguration().locale;
+                if (! newLocale.equals(mLocale)) {
+                    mLocale = newLocale;
+                    mClockFormatString = ""; // force refresh
+                }
             }
             updateClock();
         }
     };
 
-    protected final void updateClock() {
+    final void updateClock() {
         mCalendar.setTimeInMillis(System.currentTimeMillis());
         setText(getSmallTime());
     }
 
-    protected final CharSequence getSmallTime() {
+    private final CharSequence getSmallTime() {
         Context context = getContext();
         boolean b24 = DateFormat.is24HourFormat(context);
         int res;
@@ -244,6 +263,10 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
         return formatted;
     }
 
+    private void updateParameters() {
+        mClockFormatString = null;
+    }
+
     protected void updateSettings(){
         ContentResolver resolver = mContext.getContentResolver();
 
@@ -260,8 +283,33 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
                 updateClock();
             }
         }
+        if (IsShade()) {
+            defaultExpandedColor = getCurrentTextColor();
+            mExpandedClockColor = Settings.System.getInt(resolver,
+                Settings.System.STATUSBAR_EXPANDED_CLOCK_COLOR, defaultExpandedColor);
+            if (mClockColor == Integer.MIN_VALUE) {
+                // flag to reset the color
+                mClockColor = defaultColor;
+            }
+            setTextColor(mExpandedClockColor);
+        } else {
+            defaultColor = getCurrentTextColor();
+            mClockColor = Settings.System.getInt(resolver,
+                Settings.System.STATUSBAR_CLOCK_COLOR, defaultColor);
+            if (mExpandedClockColor == Integer.MIN_VALUE) {
+                // flag to reset the color
+                mExpandedClockColor = defaultExpandedColor;
+            }
+            setTextColor(mClockColor);
+        }
         mClockStyle = (Settings.System.getInt(resolver,Settings.System.STATUS_BAR_CLOCK_STYLE, 1));
         updateClockVisibility(true);  
+    }
+
+    public boolean IsShade()
+    {
+        Object o = getTag();
+        return (o != null && o.toString().equals("expanded"));
     }
 
     public void updateClockVisibility(boolean show) {

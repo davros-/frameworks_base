@@ -99,7 +99,7 @@ import java.util.HashMap;
 /**
  *
  */
-class QuickSettings {
+public class QuickSettings {
     private static final String TAG = "QuickSettings";
     public static final boolean SHOW_IME_TILE = false;
 
@@ -501,8 +501,7 @@ class QuickSettings {
                                 (UserManager) mContext.getSystemService(Context.USER_SERVICE);
                         if (um.getUsers(true).size() > 1) {
                             try {
-                                WindowManagerGlobal.getWindowManagerService().lockNow(
-                                        LockPatternUtils.USER_SWITCH_LOCK_OPTIONS);
+                        WindowManagerGlobal.getWindowManagerService().lockNow(null);
                             } catch (RemoteException e) {
                                 Log.e(TAG, "Couldn't show user switcher", e);
                             }

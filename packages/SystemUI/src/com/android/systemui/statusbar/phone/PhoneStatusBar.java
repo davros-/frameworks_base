@@ -32,6 +32,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.CustomTheme;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -101,8 +102,10 @@ import com.android.systemui.statusbar.policy.NetworkController;
 import com.android.systemui.statusbar.policy.NotificationRowLayout;
 import com.android.systemui.statusbar.policy.OnSizeChangedListener;
 import com.android.systemui.statusbar.policy.Prefs;
+import com.android.systemui.aokp.AwesomeAction;
 
 import java.io.FileDescriptor;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
@@ -319,7 +322,7 @@ public class PhoneStatusBar extends BaseStatusBar {
             if (MULTIUSER_DEBUG) Slog.d(TAG, String.format("User setup changed: " +
                     "selfChange=%s userSetup=%s mUserSetup=%s",
                     selfChange, userSetup, mUserSetup));
-            if (mSettingsButton != null && !mHasSettingsPanel) {
+            if (mSettingsButton != null && mHasFlipSettings) {
                 mSettingsButton.setVisibility(userSetup ? View.VISIBLE : View.INVISIBLE);
             }
             if (mSettingsPanel != null) {
@@ -384,6 +387,7 @@ public class PhoneStatusBar extends BaseStatusBar {
             }});
 
         mStatusBarView = (PhoneStatusBarView) mStatusBarWindow.findViewById(R.id.status_bar);
+        mStatusBarView.setStatusBar(this);
         mStatusBarView.setBar(this);
         
 
@@ -645,6 +649,11 @@ public class PhoneStatusBar extends BaseStatusBar {
     @Override
     protected View getStatusBarView() {
         return mStatusBarView;
+    }
+
+    @Override
+    public QuickSettingsContainerView getQuickSettingsPanel() {
+        return mSettingsContainer;
     }
 
     @Override
@@ -1397,6 +1406,7 @@ public class PhoneStatusBar extends BaseStatusBar {
         animateCollapsePanels(CommandQueue.FLAG_EXCLUDE_NONE);
     }
 
+    @Override
     public void animateCollapsePanels(int flags) {
         if (SPEW) {
             Slog.d(TAG, "animateCollapse():"
@@ -1420,6 +1430,7 @@ public class PhoneStatusBar extends BaseStatusBar {
 
         mStatusBarWindow.cancelExpandHelper();
         mStatusBarView.collapseAllPanels(true);
+        super.animateCollapsePanels(flags);
     }
 
     public ViewPropertyAnimator setVisibilityWhenDone(
@@ -1539,6 +1550,9 @@ public class PhoneStatusBar extends BaseStatusBar {
             return;
         }
 
+        // Settings are not available in setup
+        if (!mUserSetup) return;
+
         if (mHasFlipSettings) {
             mNotificationPanel.expand();
             if (mFlipSettingsView.getVisibility() != View.VISIBLE) {
@@ -1552,6 +1566,9 @@ public class PhoneStatusBar extends BaseStatusBar {
     }
 
     public void switchToSettings() {
+        // Settings are not available in setup
+        if (!mUserSetup) return;
+
         mFlipSettingsView.setScaleX(1f);
         mFlipSettingsView.setVisibility(View.VISIBLE);
         mSettingsButton.setVisibility(View.GONE);
@@ -1605,6 +1622,9 @@ public class PhoneStatusBar extends BaseStatusBar {
     }
 
     public void flipToSettings() {
+        // Settings are not available in setup
+        if (!mUserSetup) return;
+
         if (mFlipSettingsViewAnim != null) mFlipSettingsViewAnim.cancel();
         if (mScrollViewAnim != null) mScrollViewAnim.cancel();
         if (mSettingsButtonAnim != null) mSettingsButtonAnim.cancel();
@@ -1973,6 +1993,10 @@ public class PhoneStatusBar extends BaseStatusBar {
 
     public void topAppWindowChanged(boolean showMenu) {
         mStatusBarView.updateBackgroundAlpha();
+
+        if (mPieControlPanel != null)
+            mPieControlPanel.setMenu(showMenu);
+
         if (DEBUG) {
             Slog.d(TAG, (showMenu?"showing":"hiding") + " the MENU button");
         }

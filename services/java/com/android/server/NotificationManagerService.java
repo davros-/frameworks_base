@@ -668,19 +668,6 @@ public class NotificationManagerService extends INotificationManager.Stub
         }
     }
 
-    static long[] getLongArray(Resources r, int resid, int maxlen, long[] def) {
-        int[] ar = r.getIntArray(resid);
-        if (ar == null) {
-            return def;
-        }
-        final int len = ar.length > maxlen ? maxlen : ar.length;
-        long[] out = new long[len];
-        for (int i=0; i<len; i++) {
-            out[i] = ar[i];
-        }
-        return out;
-    }
-
     class QuietHoursSettingsObserver extends ContentObserver {
         QuietHoursSettingsObserver(Handler handler) {
             super(handler);
@@ -724,6 +711,20 @@ public class NotificationManagerService extends INotificationManager.Stub
                     Settings.System.QUIET_HOURS_DIM, 0) != 0;
         }
     }
+
+    static long[] getLongArray(Resources r, int resid, int maxlen, long[] def) {
+        int[] ar = r.getIntArray(resid);
+        if (ar == null) {
+            return def;
+        }
+        final int len = ar.length > maxlen ? maxlen : ar.length;
+        long[] out = new long[len];
+        for (int i=0; i<len; i++) {
+            out[i] = ar[i];
+        }
+        return out;
+    }
+
     NotificationManagerService(Context context, StatusBarManagerService statusBar,
             LightsService lights)
     {
@@ -1213,6 +1214,7 @@ public class NotificationManagerService extends INotificationManager.Stub
 
                 final AudioManager audioManager = (AudioManager) mContext
                 .getSystemService(Context.AUDIO_SERVICE);
+
                 // sound
                 final boolean useDefaultSound =
                     (notification.defaults & Notification.DEFAULT_SOUND) != 0;
@@ -1254,20 +1256,18 @@ public class NotificationManagerService extends INotificationManager.Stub
                 final boolean hasCustomVibrate = notification.vibrate != null;
 
                 // new in 4.2: if there was supposed to be a sound and we're in vibrate mode,
-                // and no other vibration is specified, we apply the default vibration anyway
+                // and no other vibration is specified, we fall back to vibration
                 final boolean convertSoundToVibration =
                            !hasCustomVibrate
                         && (useDefaultSound || notification.sound != null)
                         && (audioManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE)
                         && (Settings.System.getBoolean(mContext.getContentResolver(), Settings.System.NOTIFICATION_CONVERT_SOUND_TO_VIBRATION, false));
 
-                // The DEFAULT_VIBRATE flag trumps any custom vibration.
+                // The DEFAULT_VIBRATE flag trumps any custom vibration AND the fallback.
                 final boolean useDefaultVibrate =
                    (notification.defaults & Notification.DEFAULT_VIBRATE) != 0;
                 if (!(inQuietHours && mQuietHoursStill)
-                        && (useDefaultVibrate || notification.vibrate != null))
-
-                if ((useDefaultVibrate || convertSoundToVibration || hasCustomVibrate)
+                        && (useDefaultVibrate || convertSoundToVibration || hasCustomVibrate)
                         && !(audioManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT)) {
                     mVibrateNotification = r;
 
