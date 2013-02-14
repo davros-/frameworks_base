@@ -308,7 +308,6 @@ final class ActivityStack {
         }
     }
 
-
     private static final ActivityTrigger mActivityTrigger;
 
     static {
