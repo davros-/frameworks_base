@@ -312,47 +312,8 @@ public class KeyguardHostView extends KeyguardViewBase {
         minimizeChallengeIfDesired();
     }
 
-<<<<<<< HEAD
-    private final OnLongClickListener mFastUnlockClickListener = new OnLongClickListener() {
-        @Override
-        public boolean onLongClick(View v) {
-            if (mLockPatternUtils.isTactileFeedbackEnabled()) {
-                v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS,
-                        HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING);
-            }
-            showNextSecurityScreenOrFinish(false);
-            return true;
-        }
-    };
-
-    private void updateBackground() {
-        String background = Settings.System.getStringForUser(getContext().getContentResolver(),
-                Settings.System.LOCKSCREEN_BACKGROUND, UserHandle.USER_CURRENT);
-
-        if (background == null) {
-            return;
-        }
-
-        if (!background.isEmpty()) {
-            try {
-                setBackgroundColor(Integer.parseInt(background));
-            } catch(NumberFormatException e) {
-                Log.e(TAG, "Invalid background color " + background);
-            }
-        } else {
-            try {
-                Context settingsContext = getContext().createPackageContext("com.android.settings", 0);
-                String wallpaperFile = settingsContext.getFilesDir() + "/lockwallpaper";
-                Bitmap backgroundBitmap = BitmapFactory.decodeFile(wallpaperFile);
-                setBackgroundDrawable(new BitmapDrawable(backgroundBitmap));
-            } catch (NameNotFoundException e) {
-            // Do nothing here
-            }
-        }
-=======
     private boolean shouldEnableAddWidget() {
         return numWidgets() < MAX_WIDGETS && mUserSetupCompleted;
->>>>>>> f8186c3... Merge remote-tracking branch 'remotes/aosp/jb-mr1.1-release' into jb-4.2
     }
 
     private int getDisabledFeatures(DevicePolicyManager dpm) {
