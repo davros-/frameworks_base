@@ -388,7 +388,6 @@ public class KeyguardHostView extends KeyguardViewBase {
                 mAppWidgetContainer.setAddWidgetEnabled(false);
             }
         }
-
         @Override
         public void onRemoveView(View v, boolean deletePermanently) {
             if (deletePermanently) {
@@ -1095,14 +1094,6 @@ public class KeyguardHostView extends KeyguardViewBase {
             }
         }
         return widgetCount;
-    }
-
-    private void setAddWidgetEnabled(boolean clickable) {
-        View addWidget = mAppWidgetContainer.findViewById(R.id.keyguard_add_widget);
-        if (addWidget != null) {
-            View addWidgetButton = addWidget.findViewById(R.id.keyguard_add_widget_view);
-            addWidgetButton.setEnabled(clickable);
-        }
     }
 
     private void addDefaultWidgets() {
