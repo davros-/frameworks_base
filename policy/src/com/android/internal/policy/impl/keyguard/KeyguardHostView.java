@@ -351,7 +351,6 @@ public class KeyguardHostView extends KeyguardViewBase {
         }
     }
 
-<<<<<<< HEAD
      private boolean shouldEnableAddWidget() {
         mUnlimitedWidgets = Settings.System.getBoolean(getContext().getContentResolver(),
                                   Settings.System.LOCKSCREEN_UNLIMITED_WIDGETS, false);
@@ -363,8 +362,6 @@ public class KeyguardHostView extends KeyguardViewBase {
         return numWidgets() < MAX_WIDGETS && mUserSetupCompleted;
     }
 
-=======
->>>>>>> f549009... framework: Custom lock screen background [1/2]
     private int getDisabledFeatures(DevicePolicyManager dpm) {
         int disabledFeatures = DevicePolicyManager.KEYGUARD_DISABLE_FEATURES_NONE;
         if (dpm != null) {
