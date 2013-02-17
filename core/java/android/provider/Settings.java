@@ -1635,6 +1635,23 @@ public final class Settings {
         @Deprecated
         public static final String WIFI_STATIC_DNS2 = "wifi_static_dns2";
 
+        /**
+         * Allows automatic retrieval of mms contents
+         * <p>Type: INT</p>
+         * 0 -- false
+         * 1 -- true
+         * @hide
+         */
+        public static final String MMS_AUTO_RETRIEVAL = "mms_auto_retrieval";
+
+        /**
+         * Allows automatic retrieval of mms contents during roaming
+         * <p>Type: INT</p>
+         * 0 -- false
+         * 1 -- true
+         * @hide
+         */
+        public static final String MMS_AUTO_RETRIEVAL_ON_ROAMING = "mms_auto_on_roaming";
 
         /**
          * Determines whether remote devices may discover and/or connect to
@@ -2002,7 +2019,7 @@ public final class Settings {
          * Whether to prevent loud volume levels when headset is first plugged in.
          * @hide
          */
-        public static final String SAFE_HEADSET_VOLUME_RESTORE = "safe_headset_volume_restore";
+        public static final String SAFE_HEADSET_VOLUME = "safe_headset_volume";
 
         /**
          * Master volume (float in the range 0.0f to 1.0f).
@@ -2690,17 +2707,6 @@ public final class Settings {
         public static final String STATUSBAR_BATTERY_BAR_COLOR = "statusbar_battery_bar_color";
 
         /**
-         * Style of Battery
-         * 0 - Icon Only
-         * 1 - Text Only
-         * 2 - Icon Text
-         * 3 - Icon Centered Text
-         * 4 - Icon Circle
-         * 5 - Hide
-         */
-        public static final String STATUSBAR_BATTERY_ICON = "statusbar_battery_icon";
-
-        /**
          * @hide
          */
         public static final String STATUSBAR_BATTERY_BAR_THICKNESS = "statusbar_battery_bar_thickness";
@@ -2809,16 +2815,6 @@ public final class Settings {
         public static final String STATUS_BAR_BATTERY = "status_bar_battery";
 
         /**
-         * @hide
-         */
-        public static final String SYSTEM_DISABLE_LOW_BATTERY_WARNING = "eos_system_disable_low_battery_warning";
-
-        /**
-         * @hide
-         */
-        public static final int SYSTEM_DISABLE_LOW_BATTERY_WARNING_DEF = 0;
-
-        /*
          * Setting for clock color
          * @hide
          */
@@ -3144,6 +3140,17 @@ public final class Settings {
          */
         public static final String LOCKSCREEN_BACKGROUND = "lockscreen_background";
 
+        /**
+         * Whether to use keyguard or homescreen widgets
+         * @hide
+         */
+        public static final String LOCKSCREEN_ALL_WIDGETS = "lockscreen_all_widgets";
+
+        /**
+         * Setting to allow Unlimited Widgets
+         * @hide
+         */
+        public static final String LOCKSCREEN_UNLIMITED_WIDGETS = "lockscreen_unlimited_widgets";
 
          /**
           * Always show the battery status on the lockscreen
@@ -3324,6 +3331,11 @@ public final class Settings {
         public static final String NAVIGATION_BAR_TINT = "navigation_bar_tint";
 
         /**
+         * Option To Colorize ALL Nav Icons
+         */
+        public static final String NAVIGATION_BAR_ALLCOLOR = "navigation_bar_allcolor";
+
+        /**
          * @hide
          */
         public static final String NAVIGATION_BAR_GLOW_TINT = "navigation_bar_glow_tint";
@@ -3464,6 +3476,8 @@ public final class Settings {
             WIFI_STATIC_NETMASK,
             WIFI_STATIC_DNS1,
             WIFI_STATIC_DNS2,
+            MMS_AUTO_RETRIEVAL,
+            MMS_AUTO_RETRIEVAL_ON_ROAMING,
             BLUETOOTH_DISCOVERABILITY,
             BLUETOOTH_DISCOVERABILITY_TIMEOUT,
             DIM_SCREEN,
@@ -7126,3 +7140,4 @@ public final class Settings {
         return "android-" + Long.toHexString(androidId);
     }
 }
+
