@@ -30,12 +30,17 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.UserInfo;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Looper;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -71,7 +76,8 @@ public class KeyguardHostView extends KeyguardViewBase {
     // Found in KeyguardAppWidgetPickActivity.java
     static final int APPWIDGET_HOST_ID = 0x4B455947;
 
-    private final int MAX_WIDGETS = 7;
+    private int MAX_WIDGETS;
+    private boolean mUnlimitedWidgets;
 
     private AppWidgetHost mAppWidgetHost;
     private AppWidgetManager mAppWidgetManager;
@@ -284,6 +290,7 @@ public class KeyguardHostView extends KeyguardViewBase {
             setSystemUiVisibility(getSystemUiVisibility() | View.STATUS_BAR_DISABLE_BACK);
         }
 
+        updateBackground();
         addDefaultWidgets();
 
         addWidgetsFromSettings();
@@ -306,11 +313,6 @@ public class KeyguardHostView extends KeyguardViewBase {
         minimizeChallengeIfDesired();
     }
 
-<<<<<<< HEAD
-    private boolean shouldEnableAddWidget() {
-        return numWidgets() < MAX_WIDGETS && mUserSetupCompleted;
-    }
-=======
     private final OnLongClickListener mFastUnlockClickListener = new OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
@@ -322,7 +324,43 @@ public class KeyguardHostView extends KeyguardViewBase {
             return true;
         }
     };
->>>>>>> 9aac6d8... Lockscreen: longpress on expand challenge handle
+
+    private void updateBackground() {
+        String background = Settings.System.getStringForUser(getContext().getContentResolver(),
+                Settings.System.LOCKSCREEN_BACKGROUND, UserHandle.USER_CURRENT);
+
+        if (background == null) {
+            return;
+        }
+
+        if (!background.isEmpty()) {
+            try {
+                setBackgroundColor(Integer.parseInt(background));
+            } catch(NumberFormatException e) {
+                Log.e(TAG, "Invalid background color " + background);
+            }
+        } else {
+            try {
+                Context settingsContext = getContext().createPackageContext("com.android.settings", 0);
+                String wallpaperFile = settingsContext.getFilesDir() + "/lockwallpaper";
+                Bitmap backgroundBitmap = BitmapFactory.decodeFile(wallpaperFile);
+                setBackgroundDrawable(new BitmapDrawable(backgroundBitmap));
+            } catch (NameNotFoundException e) {
+            // Do nothing here
+            }
+        }
+    }
+
+     private boolean shouldEnableAddWidget() {
+        mUnlimitedWidgets = Settings.System.getBoolean(getContext().getContentResolver(),
+                                  Settings.System.LOCKSCREEN_UNLIMITED_WIDGETS, false);
+        if (mUnlimitedWidgets) {
+            MAX_WIDGETS = numWidgets() + 1;
+        } else {
+            MAX_WIDGETS = 5;
+        }
+        return numWidgets() < MAX_WIDGETS && mUserSetupCompleted;
+    }
 
     private int getDisabledFeatures(DevicePolicyManager dpm) {
         int disabledFeatures = DevicePolicyManager.KEYGUARD_DISABLE_FEATURES_NONE;
@@ -410,6 +448,7 @@ public class KeyguardHostView extends KeyguardViewBase {
                 mAppWidgetContainer.setAddWidgetEnabled(false);
             }
         }
+
         @Override
         public void onRemoveView(View v, boolean deletePermanently) {
             if (deletePermanently) {
