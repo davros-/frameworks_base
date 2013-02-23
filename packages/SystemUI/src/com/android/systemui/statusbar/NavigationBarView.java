@@ -54,12 +54,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import static com.android.internal.util.aokp.AwesomeConstants.*;
 import com.android.internal.statusbar.IStatusBarService;
 import com.android.systemui.R;
 import com.android.systemui.aokp.AokpTarget;
 import com.android.systemui.statusbar.policy.ExtensibleKeyButtonView;
 import com.android.systemui.TransparencyManager;
 import com.android.systemui.aokp.AwesomeAction;
+import com.android.systemui.aokp.NavBarHelpers;
 import com.android.systemui.statusbar.policy.KeyButtonView;
 
 public class NavigationBarView extends LinearLayout implements BaseStatusBar.NavigationBarCallback {
@@ -92,6 +94,10 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
 
     private AokpTarget mAokpTarget;
 
+    private BaseStatusBar mBar;
+    private SettingsObserver mSettingsObserver;
+    private Context mContext;
+
     // workaround for LayoutTransitions leaving the nav buttons in a weird state (bug 5549288)
     final static boolean WORKAROUND_INVALID_LAYOUT = true;
     final static int MSG_CHECK_INVALID_LAYOUT = 8686;
@@ -117,21 +123,21 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
 
     public final static int StockButtonsQty = 3;
     public final static String[] StockClickActions = {
-        AokpTarget.ACTION_BACK,
-        AokpTarget.ACTION_HOME,
-        AokpTarget.ACTION_RECENTS,
-        AokpTarget.ACTION_NULL,
-        AokpTarget.ACTION_NULL,
-        AokpTarget.ACTION_NULL,
-        AokpTarget.ACTION_NULL };
+        AwesomeConstant.ACTION_BACK.value(),
+        AwesomeConstant.ACTION_HOME.value(),
+        AwesomeConstant.ACTION_RECENTS.value(),
+        AwesomeConstant.ACTION_NULL.value(),
+        AwesomeConstant.ACTION_NULL.value(),
+        AwesomeConstant.ACTION_NULL.value(),
+        AwesomeConstant.ACTION_NULL.value() };
     public final static String[] StockLongpress = {
-        AokpTarget.ACTION_NULL,
-        AokpTarget.ACTION_NULL,
-        AokpTarget.ACTION_NULL,
-        AokpTarget.ACTION_NULL,
-        AokpTarget.ACTION_NULL,
-        AokpTarget.ACTION_NULL,
-        AokpTarget.ACTION_NULL };
+        AwesomeConstant.ACTION_NULL.value(),
+        AwesomeConstant.ACTION_NULL.value(),
+        AwesomeConstant.ACTION_NULL.value(),
+        AwesomeConstant.ACTION_NULL.value(),
+        AwesomeConstant.ACTION_NULL.value(),
+        AwesomeConstant.ACTION_NULL.value(),
+        AwesomeConstant.ACTION_NULL.value() };
 
     FrameLayout rot0;
     FrameLayout rot90;
@@ -241,6 +247,7 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
     public NavigationBarView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
+        mContext = context;
         mHidden = false;
 
         mDisplay = ((WindowManager)context.getSystemService(
@@ -300,7 +307,7 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
                         v.setImageDrawable(new BitmapDrawable(getResources(), f.getAbsolutePath()));
                     }
                 } else {
-                        v.setImageDrawable(mAokpTarget.getIconImage(mClickActions[j]));
+                        v.setImageDrawable(NavBarHelpers.getIconImage(mContext, mClickActions[j]));
                 }
                 addButton(navButtonLayout, v, landscape && !mLeftyMode);
                 // if we are in LeftyMode, then we want to add to end, like Portrait
