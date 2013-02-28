@@ -127,7 +127,6 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
     private Profile mChosenProfile;
     private boolean mEnableNavBarHideToggle = true;
     private static int rebootIndex = 0;
-    private boolean mShowRebootOnLock = true;
 
     /**
      * @param context everything needs a context :(
@@ -246,10 +245,9 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
             }
         };
         onExpandDesktopModeChanged();
-
-        mShowRebootOnLock = Settings.System.getBoolean(mContext.getContentResolver(),
-                Settings.System.POWER_DIALOG_SHOW_REBOOT_KEYGUARD, true);
-
+        mEnableNavBarHideToggle= Settings.System.getBoolean(mContext.getContentResolver(),
+                Settings.System.POWER_DIALOG_SHOW_NAVBAR_HIDE, false);
+        mNavBarHideToggle = new NavBarAction(mHandler);
         mAirplaneModeOn = new ToggleAction(
                 R.drawable.ic_lock_airplane_mode,
                 R.drawable.ic_lock_airplane_mode_off,
@@ -331,11 +329,7 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
                     }
 
                     public boolean showDuringKeyguard() {
-                        if (mShowRebootOnLock) {
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return true;
                     }
 
                     public boolean showBeforeProvisioning() {
