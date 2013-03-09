@@ -458,6 +458,14 @@ public final class Configuration implements Parcelable, Comparable<Configuration
      * <a href="{@docRoot}guide/topics/resources/providing-resources.html#UiModeQualifier">appliance</a>
      * resource qualifier. */
     public static final int UI_MODE_TYPE_APPLIANCE = 0x05;
+<<<<<<< HEAD
+=======
+    /** Constant for {@link #uiMode}: a {@link #UI_MODE_TYPE_MASK}
+     * value that corresponds to the
+     * inverted framework
+     * resource qualifier. */
+    public static final int UI_MODE_TYPE_INVERTED = 0x06;
+>>>>>>> b2ab424... Frameworks: Add new configuration qualifier for UI change on the fly (1/3)
 
     /** Constant for {@link #uiMode}: bits that encode the night mode. */
     public static final int UI_MODE_NIGHT_MASK = 0x30;
