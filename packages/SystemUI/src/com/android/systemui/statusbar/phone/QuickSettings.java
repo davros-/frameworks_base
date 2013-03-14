@@ -312,7 +312,7 @@ public class QuickSettings {
         mModel.onImeWindowStatusChanged(visible);
     }
 
-    public void setup(NetworkController networkController, BluetoothController bluetoothController,
+    void setup(NetworkController networkController, BluetoothController bluetoothController,
             BatteryController batteryController, LocationController locationController) {
         mBluetoothController = bluetoothController;
 
