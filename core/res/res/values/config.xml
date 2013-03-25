@@ -1066,10 +1066,8 @@
     <!-- empty string to disable, or like: /sys/kernel/fast_charge/force_fast_charge
          it is disabled by default so devices need to add an overlay to enable-->
     <string name="config_fastChargePath" translatable="false"></string>
-<<<<<<< HEAD
-=======
 
     <!-- True if the Sym key should open the InputMethodPicker (default) -->
     <bool name="config_symKeyShowsImePicker">true</bool>
->>>>>>> 0651c7c... Prevent Sym key from showing the IME picker
+
 </resources>
