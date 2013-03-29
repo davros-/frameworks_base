@@ -578,7 +578,6 @@
     <string name="quick_settings_data_off_label">Data Off</string>
     <string name="quick_settings_sound_on">Sound on</string>
 
-<<<<<<< HEAD
     <!-- Dialog title for navigation bar button selection -->
     <string name="navbar_dialog_title">Choose action to assign</string>
     <string name="navbar_home_button">Home button</string>
@@ -590,7 +589,6 @@
     <string name="navbar_menu_always_button">Menu (alwaysShow) button</string>
     <string name="navbar_menu_big_button">Menu button</string>
 
-=======
     <!-- Battery status in pie controls -->
     <string name="pie_battery_status_charging">Charging (<xliff:g id="percent">%d</xliff:g>%%)</string>
     <string name="pie_battery_status_full">Charged</string>
@@ -600,5 +598,4 @@
     <string name="pie_phone_status_no_service">No service</string>
     <string name="pie_phone_status_airplane_mode">Airplane mode on</string>
     <string name="pie_phone_status_emergency_only">Emergency calls only</string>
->>>>>>> a0b9bb7... Frameworks: port CM pie control
 </resources>
