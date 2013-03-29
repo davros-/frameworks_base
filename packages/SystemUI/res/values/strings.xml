@@ -578,6 +578,7 @@
     <string name="quick_settings_data_off_label">Data Off</string>
     <string name="quick_settings_sound_on">Sound on</string>
 
+<<<<<<< HEAD
     <!-- Dialog title for navigation bar button selection -->
     <string name="navbar_dialog_title">Choose action to assign</string>
     <string name="navbar_home_button">Home button</string>
@@ -595,4 +596,6 @@
     <string name="pie_hour_format_24">HH:mm</string>
     <string name="pie_am_pm">a</string>
 
+=======
+>>>>>>> 11c073b... frameworks: revert all PA Pie control 2/2
 </resources>

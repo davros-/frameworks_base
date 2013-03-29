@@ -33,6 +33,7 @@
     <!-- ==================== system bar only ==================== -->
     <drawable name="system_bar_background">#ff000000</drawable>
     <!-- the darkening filter applied to notifications -->
+<<<<<<< HEAD
     <drawable name="notification_icon_area_smoke">#aa000000</drawable>
     <color name="notification_panel_scrim_color">#B0000000</color>
     <color name="qs_tile_user_label">#CC000000</color>
@@ -61,4 +62,8 @@
     <color name="status">#ffffff</color>
 
     <!-- THEMEABLE PIE PIE PIE PIE PIE? -->
+=======
+    <drawable name="notification_icon_area_smoke">#00000000</drawable>
+    <color name="notification_panel_scrim_color">#00000000</color>
+>>>>>>> 11c073b... frameworks: revert all PA Pie control 2/2
 </resources>
