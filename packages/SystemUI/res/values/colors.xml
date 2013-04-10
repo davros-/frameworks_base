@@ -50,13 +50,9 @@
     <color name="pie_foreground_color">#ffffffff</color>
     <color name="pie_background_color">#dd0099cc</color>
     <color name="pie_selected_color">@android:color/holo_blue_light</color>
-<<<<<<< HEAD
     <color name="pie_outline_color">#dd0099cc</color>
-=======
-    <color name="pie_outline_color">#33b5e5</color>
     <!-- Notification Shortcuts -->
     <drawable name="notification_shortcut_background_color">#00000000</drawable>
     <drawable name="notification_item_background_color">#ff111111</drawable>
     <drawable name="notification_item_background_color_pressed">#ff257390</drawable>
->>>>>>> 00c3fbd... Framework: Port Notification Shortcuts (1/2)
 </resources>
