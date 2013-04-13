@@ -96,9 +96,6 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
 
     int mNumberOfButtons = 3;
 
-    // Will determine if NavBar goes to the left side in Landscape Mode
-    private boolean mLeftyMode;
-
     /* 0 = Phone UI
      * 1 = Tablet UI
      * 2 = Phablet UI
@@ -182,7 +179,6 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
 
     public void setDelegateView(View view) {
         mDelegateHelper.setDelegateView(view);
-        //mDelegateHelper.setLefty(mLeftyMode);
     }
 
     public void setBar(BaseStatusBar phoneStatusBar) {
@@ -297,9 +293,9 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
                 } else {
                         v.setImageDrawable(mAokpTarget.getIconImage(mClickActions[j]));
                 }
-                addButton(navButtonLayout, v, landscape && !mLeftyMode);
+                addButton(navButtonLayout, v, landscape);
                 // if we are in LeftyMode, then we want to add to end, like Portrait
-                addLightsOutButton(lightsOut, v, landscape && !mLeftyMode, false);
+                addLightsOutButton(lightsOut, v, landscape, false);
 
                 if (v.getId() == R.id.back){
                 	mBackIcon = mBackLandIcon = v.getDrawable();
@@ -323,12 +319,12 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
                     // since we didn't add these at the beginning, we need to insert it now
                     // the behavior is backwards from landscape (ie, insert at beginning
                     // if portrait, add to end if landscape
-                    addButton(navButtonLayout, leftMenuKey, !landscape || (landscape && mLeftyMode));
-                    addLightsOutButton(lightsOut, leftMenuKey, !landscape || (landscape && mLeftyMode), true);
+                    addButton(navButtonLayout, leftMenuKey, !landscape || (landscape));
+                    addLightsOutButton(lightsOut, leftMenuKey, !landscape || (landscape), true);
 
                     View rightMenuKey = generateKey(landscape, KEY_MENU_RIGHT);
-                    addButton(navButtonLayout, rightMenuKey, landscape && !mLeftyMode);
-                    addLightsOutButton(lightsOut, rightMenuKey, landscape && !mLeftyMode, true);
+                    addButton(navButtonLayout, rightMenuKey, landscape);
+                    addLightsOutButton(lightsOut, rightMenuKey, landscape, true);
                 }
             } else {
                 // there's a big menu button.
@@ -960,8 +956,6 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
                     Settings.System.getUriFor(Settings.System.NAVIGATION_BAR_BUTTONS_QTY), false,
                     this);
             resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.NAVIGATION_BAR_LEFTY_MODE), false, this);
-            resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.NAVIGATION_BAR_MENU_ARROW_KEYS), false, this);
 
             for (int j = 0; j < 7; j++) { // watch all 7 settings for changes.
@@ -1026,8 +1020,6 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
                 Settings.System.NAVIGATION_BAR_MENU_ARROW_KEYS, true);
         mCurrentUIMode = Settings.System.getInt(resolver,
                 Settings.System.CURRENT_UI_MODE,0);
-        mLeftyMode = Settings.System.getBoolean(resolver,
-                Settings.System.NAVIGATION_BAR_LEFTY_MODE, false);
         mNumberOfButtons = Settings.System.getInt(resolver,
                 Settings.System.NAVIGATION_BAR_BUTTONS_QTY, 0);
         if (mNumberOfButtons == 0) {
