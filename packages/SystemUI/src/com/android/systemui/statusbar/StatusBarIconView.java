@@ -74,6 +74,11 @@ public class StatusBarIconView extends AnimatedImageView {
                 Settings.System.STATUS_BAR_NOTIF_COUNT, 0) == 1;
         setContentDescription(notification);
 
+<<<<<<< HEAD
+        SettingsObserver observer = new SettingsObserver(new Handler());
+        observer.observe();
+=======
+>>>>>>> 0590d16... systemui: fix moar memory leaks
         // We do not resize and scale system icons (on the right), only notification icons (on the
         // left).
         if (notification != null) {

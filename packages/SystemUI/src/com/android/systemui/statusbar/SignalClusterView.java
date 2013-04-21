@@ -57,8 +57,13 @@ public class SignalClusterView
     ViewGroup mWifiGroup, mMobileGroup;
     ImageView mWifi, mMobile, mWifiActivity, mMobileActivity, mMobileType, mAirplane;
     View mSpacer;
+<<<<<<< HEAD
+
+    Handler mHandler;
+=======
     
     private SettingsObserver mSettingsObserver;
+>>>>>>> 0590d16... systemui: fix moar memory leaks
 
     public SignalClusterView(Context context) {
         this(context, null);
@@ -70,7 +75,15 @@ public class SignalClusterView
 
     public SignalClusterView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+<<<<<<< HEAD
+
+        mHandler = new Handler();
+
+        SettingsObserver settingsObserver = new SettingsObserver(mHandler);
+        settingsObserver.observe();
+=======
         mSettingsObserver = new SettingsObserver(new Handler());
+>>>>>>> 0590d16... systemui: fix moar memory leaks
     }
 
     public void setNetworkController(NetworkController nc) {
