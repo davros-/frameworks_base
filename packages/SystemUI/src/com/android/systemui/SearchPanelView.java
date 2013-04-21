@@ -113,8 +113,7 @@ public class SearchPanelView extends FrameLayout implements
 
     private PackageManager mPackageManager;
     private Resources mResources;
-    private SettingsObserver mObserver;
-
+    private TargetObserver mTargetObserver;
     private ContentResolver mContentResolver;
     private String[] targetActivities = new String[5];
     private String[] longActivities = new String[5];
@@ -144,7 +143,13 @@ public class SearchPanelView extends FrameLayout implements
         mResources = mContext.getResources();
 
         mContentResolver = mContext.getContentResolver();
-        mObserver = new SettingsObserver(new Handler());
+
+        mAokpTarget = new AokpTarget(context);
+
+        SettingsObserver observer = new SettingsObserver(new Handler());
+        observer.observe();
+        updateSettings();
+
     }
 
     private class H extends Handler {
@@ -472,20 +477,6 @@ public class SearchPanelView extends FrameLayout implements
         return true;
     }
 
-    @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-
-        mObserver.observe();
-        updateSettings();
-    }
-
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        mObserver.unobserve();
-    }
-
     /**
      * Whether the panel is showing, or, if it's animating, whether it will be
      * when the animation is done.
@@ -531,41 +522,43 @@ public class SearchPanelView extends FrameLayout implements
         return mResources.getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
     }
 
-    class SettingsObserver extends ContentObserver {
-        private ContentResolver _persistentResolver; //null if unobserved, not if observed
-
-        SettingsObserver(Handler handler) {
+    public class TargetObserver extends ContentObserver {
+        public TargetObserver(Handler handler) {
             super(handler);
-        }
-
-        void observe() {
-            if (_persistentResolver == null)
-            {
-                _persistentResolver = mContext.getContentResolver();
-                _persistentResolver.registerContentObserver(Settings.System.getUriFor(
-                        Settings.System.SYSTEMUI_NAVRING_AMOUNT), false, this);
-
-                for (int i = 0; i < 5; i++) {
-	                _persistentResolver.registerContentObserver(
-                        Settings.System.getUriFor(Settings.System.SYSTEMUI_NAVRING[i]), false, this);
-	                _persistentResolver.registerContentObserver(
-                        Settings.System.getUriFor(Settings.System.SYSTEMUI_NAVRING_LONG[i]), false, this);
-                }
-            }
-            //else BEEN THERE. DONE THAT.
-        }
-
-        void unobserve() {
-            if (_persistentResolver != null) {
-                _persistentResolver.unregisterContentObserver(this);
-                _persistentResolver = null;
-            }
-            //else BEEN THERE. DONE THAT.
         }
 
         @Override
         public boolean deliverSelfNotifications() {
             return super.deliverSelfNotifications();
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            setDrawables();
+            updateSettings();
+        }
+    }
+
+    class SettingsObserver extends ContentObserver {
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.NAVIGATION_BAR_LEFTY_MODE), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.SYSTEMUI_NAVRING_AMOUNT), false, this);
+
+            for (int i = 0; i < 5; i++) {
+	            resolver.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.SYSTEMUI_NAVRING[i]), false, this);
+	            resolver.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.SYSTEMUI_NAVRING_LONG[i]), false, this);
+            }
+
         }
 
         @Override

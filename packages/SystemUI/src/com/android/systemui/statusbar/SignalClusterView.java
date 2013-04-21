@@ -57,13 +57,25 @@ public class SignalClusterView
     ViewGroup mWifiGroup, mMobileGroup;
     ImageView mWifi, mMobile, mWifiActivity, mMobileActivity, mMobileType, mAirplane;
     View mSpacer;
-<<<<<<< HEAD
 
     Handler mHandler;
-=======
-    
-    private SettingsObserver mSettingsObserver;
->>>>>>> 0590d16... systemui: fix moar memory leaks
+
+    class SettingsObserver extends ContentObserver {
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.STATUS_BAR_SIGNAL_TEXT), false, this);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            updateSettings();
+        }
+    }
 
     public SignalClusterView(Context context) {
         this(context, null);
@@ -75,15 +87,11 @@ public class SignalClusterView
 
     public SignalClusterView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-<<<<<<< HEAD
 
         mHandler = new Handler();
 
         SettingsObserver settingsObserver = new SettingsObserver(mHandler);
         settingsObserver.observe();
-=======
-        mSettingsObserver = new SettingsObserver(new Handler());
->>>>>>> 0590d16... systemui: fix moar memory leaks
     }
 
     public void setNetworkController(NetworkController nc) {
@@ -214,6 +222,8 @@ public class SignalClusterView
 
         mMobileType.setVisibility(
                 !mWifiVisible ? View.VISIBLE : View.GONE);
+
+        updateSettings();
     }
 
     private void updateSignalClusterStyle() {
@@ -223,26 +233,7 @@ public class SignalClusterView
         }
     }
 
-    class SettingsObserver extends ContentObserver {
-        SettingsObserver(Handler handler) {
-            super(handler);
-        }
-
-        void observe() {
-            ContentResolver resolver = mContext.getContentResolver();
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.STATUS_BAR_SIGNAL_TEXT), false, this);
-        }
-
-        @Override
-        public void onChange(boolean selfChange) {
-            updateSettings();
-        }
-    }
-
-
-
-    protected void updateSettings() {
+    private void updateSettings() {
         ContentResolver resolver = mContext.getContentResolver();
         mSignalClusterStyle = (Settings.System.getInt(resolver,
                 Settings.System.STATUS_BAR_SIGNAL_TEXT, SIGNAL_CLUSTER_STYLE_NORMAL));
