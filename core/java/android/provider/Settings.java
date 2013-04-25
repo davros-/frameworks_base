@@ -5273,6 +5273,17 @@ public final class Settings {
         public static final String SCREENSAVER_DEFAULT_COMPONENT = "screensaver_default_component";
 
         /**
+<<<<<<< HEAD
+=======
+         * If screensavers are enabled, whether the screensaver should be automatically launched
+         * when charging wirelessly.
+         */
+        public static final String SCREENSAVER_ACTIVATE_ON_WIRELESS_CHARGE = "screensaver_activate_on_wireless_charger";
+
+        public static final String ENABLE_PERMISSIONS_MANAGEMENT = "enable_permissions_management";
+
+        /**
+>>>>>>> 00a0c83... Frameworks: Add Permissions Management to DEMENTED [4/4]
          * Whether to allow killing of the foreground app by long-pressing the Back button
          * @hide
          */
