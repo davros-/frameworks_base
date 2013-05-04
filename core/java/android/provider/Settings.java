@@ -3311,7 +3311,7 @@ public final class Settings {
         };
 
         /**
-         * Custom navring long press actions
+         * 
          * Whether electronic beam animation is enabled or not
          * @hide
          */
@@ -3326,6 +3326,7 @@ public final class Settings {
 
         /**
          *
+         * Custom navring long press actions
          * @hide
          */
         public static final String[] SYSTEMUI_NAVRING_LONG = new String[] {
@@ -3337,6 +3338,7 @@ public final class Settings {
         };
 
         /**
+        *
 	* Wether the hints for the left and right widgets are shown when the screen is turned on
 	* @hide
 	*/
