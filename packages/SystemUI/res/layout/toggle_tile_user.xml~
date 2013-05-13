@@ -35,6 +35,13 @@
         android:layout_gravity="center_horizontal|bottom"
         android:background="@color/qs_tile_user_label"
         android:gravity="center"
+<<<<<<< HEAD:packages/SystemUI/res/layout/quick_settings_tile_user.xml
+        android:text="@string/quick_settings_user_label"
+        android:background="@color/qs_tile_user_label"
+        />
+</FrameLayout>
+=======
         android:text="@string/quick_settings_user_label" />
 
 </com.android.systemui.statusbar.phone.QuickSettingsTileView>
+>>>>>>> b05661a... Toggle rewrite (1/2):packages/SystemUI/res/layout/toggle_tile_user.xml

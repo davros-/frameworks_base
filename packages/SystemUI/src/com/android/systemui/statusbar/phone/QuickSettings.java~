@@ -177,7 +177,12 @@ class QuickSettings {
     private static final String DEFAULT_TOGGLES = "default";
 
     private int mWifiApState = WifiManager.WIFI_AP_STATE_DISABLED;
+<<<<<<< HEAD
+    private int mWifiState = WifiManager.WIFI_STATE_DISABLED;
+
+=======
     private int mRecordingState;
+>>>>>>> 0134f93... Framework: QuickRecord Tile (2/3)
     private int mDataState = -1;
 
     private boolean usbTethered;
