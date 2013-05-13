@@ -3283,11 +3283,6 @@ public final class Settings {
         */
         public static final String MEDIA_SCANNER_ON_BOOT = "media_scanner_on_boot";
 
-         /**
-          * Option To Colorize ALL Nav Icons
-          */
-         public static final String NAVIGATION_BAR_ALLCOLOR = "navigation_bar_allcolor";
-
         /**
          * @hide
          */
