@@ -260,11 +260,8 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
         mVertical = false;
         mShowMenu = false;
         mDelegateHelper = new DelegateViewHelper(this);
-       
-        mBackIcon = res.getDrawable(R.drawable.ic_sysbar_back);
-        mBackLandIcon = res.getDrawable(R.drawable.ic_sysbar_back_land);
-        mBackAltIcon = ((KeyButtonView)generateKey(false, KEY_BACK_ALT)).getDrawable(); //res.getDrawable(R.drawable.ic_sysbar_back_ime);
-        mBackAltLandIcon = ((KeyButtonView)generateKey(true, KEY_BACK_ALT)).getDrawable(); // res.getDrawable(R.drawable.ic_sysbar_back_ime);
+        mBackIcon = NavBarHelpers.getIconImage(mContext, AwesomeConstant.ACTION_BACK.value());
+        mBackAltIcon = ((KeyButtonView)generateKey(false, KEY_BACK_ALT)).getDrawable();
         mAokpTarget = new AokpTarget(context);
     }
 
@@ -304,9 +301,6 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
                     if (f.exists()) {
                         v.setImageDrawable(new BitmapDrawable(getResources(), f.getAbsolutePath()));
                     }
-                } else {
-                    v.setImageDrawable(NavBarHelpers.getIconImage(mContext, mClickActions[j]));
-                    v.setTint(mClickActions[j].startsWith("**") || mColorAllIcons);
                 }
                 addButton(navButtonLayout, v, landscape && !mLeftyMode);
                 // if we are in LeftyMode, then we want to add to end, like Portrait
@@ -396,7 +390,6 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
                 v.setContentDescription(r.getString(R.string.accessibility_menu));
                 v.setGlowBackground(landscape ? R.drawable.ic_sysbar_highlight_land
                         : R.drawable.ic_sysbar_highlight);
-                v.setTint(true);
                 break;
             case KEY_MENU_LEFT:
                 v = new KeyButtonView(mContext, null);
@@ -415,7 +408,6 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
                 v.setContentDescription(r.getString(R.string.accessibility_menu));
                 v.setGlowBackground(landscape ? R.drawable.ic_sysbar_highlight_land
                         : R.drawable.ic_sysbar_highlight);
-                v.setTint(true);
                 break;
             case KEY_ARROW_LEFT:
                 v = new KeyButtonView(mContext, null);
@@ -427,7 +419,6 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
                         : R.drawable.ic_sysbar_highlight);
                 v.setVisibility(View.GONE);
                 v.setSupportsLongPress(true);
-                v.setTint(true);
                 break;
             case KEY_ARROW_RIGHT:
                 v = new KeyButtonView(mContext, null);
@@ -439,7 +430,6 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
                         : R.drawable.ic_sysbar_highlight);
                 v.setVisibility(View.GONE);
                 v.setSupportsLongPress(true);
-                v.setTint(true);
                 break;
             case KEY_BACK_ALT:
                 v = new KeyButtonView(mContext, null);
@@ -447,7 +437,6 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
                 v.setImageResource(R.drawable.ic_sysbar_back_ime);
                 v.setGlowBackground(landscape ? R.drawable.ic_sysbar_highlight_land
                         : R.drawable.ic_sysbar_highlight);
-                v.setTint(true);
         }
 
         return v;
