@@ -261,7 +261,6 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
         mDelegateHelper = new DelegateViewHelper(this);
         mBackIcon = NavBarHelpers.getIconImage(mContext, AwesomeConstant.ACTION_BACK.value());
         mBackAltIcon = ((KeyButtonView)generateKey(false, KEY_BACK_ALT)).getDrawable();
-        mAokpTarget = new AokpTarget(context);
     }
 
     public void setTransparencyManager(TransparencyManager tm) {
