@@ -202,7 +202,7 @@ public class SearchPanelView extends FrameLayout implements
         public void onTrigger(View v, final int target) {
             final int resId = mGlowPadView.getResourceIdForTarget(target);
             mTarget = target;
-             if (!mLongPress) {
+            if (!mLongPress) {
                 AwesomeAction.launchAction(mContext, longList.get(mTarget));
                 mHandler.removeCallbacks(SetLongPress);
             }
