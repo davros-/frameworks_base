@@ -300,7 +300,7 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
                     if (f.exists()) {
                         v.setImageDrawable(new BitmapDrawable(getResources(), f.getAbsolutePath()));
                     }
-                    v.setTint(mColorAllIcons);
+  
                 } else {
                        v.setImageDrawable(NavBarHelpers.getIconImage(mContext, mClickActions[j]));
                 }
