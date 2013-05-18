@@ -303,8 +303,7 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
                     }
                     v.setTint(mColorAllIcons);
                 } else {
-                    v.setImageDrawable(NavBarHelpers.getIconImage(mContext, mClickActions[j]));
-                    v.setTint(mClickActions[j].startsWith("**") || mColorAllIcons);
+                       v.setImageDrawable(NavBarHelpers.getIconImage(mContext, mClickActions[j]));
                 }
                 addButton(navButtonLayout, v, landscape && !mLeftyMode);
                 // if we are in LeftyMode, then we want to add to end, like Portrait
@@ -401,7 +400,6 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
                 v.setContentDescription(r.getString(R.string.accessibility_menu));
                 v.setGlowBackground(landscape ? R.drawable.ic_sysbar_highlight_land
                         : R.drawable.ic_sysbar_highlight);
-                v.setTint(true);
                 break;
             case KEY_MENU_LEFT:
                 v = new KeyButtonView(mContext, null);
@@ -420,7 +418,6 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
                 v.setContentDescription(r.getString(R.string.accessibility_menu));
                 v.setGlowBackground(landscape ? R.drawable.ic_sysbar_highlight_land
                         : R.drawable.ic_sysbar_highlight);
-                v.setTint(true);
                 break;
             case KEY_ARROW_LEFT:
                 v = new KeyButtonView(mContext, null);
@@ -432,7 +429,6 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
                         : R.drawable.ic_sysbar_highlight);
                 v.setVisibility(View.GONE);
                 v.setSupportsLongPress(true);
-                v.setTint(true);
                 break;
             case KEY_ARROW_RIGHT:
                 v = new KeyButtonView(mContext, null);
@@ -444,7 +440,6 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
                         : R.drawable.ic_sysbar_highlight);
                 v.setVisibility(View.GONE);
                 v.setSupportsLongPress(true);
-                v.setTint(true);
                 break;
             case KEY_BACK_ALT:
                 v = new KeyButtonView(mContext, null);
@@ -452,7 +447,6 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
                 v.setImageResource(R.drawable.ic_sysbar_back_ime);
                 v.setGlowBackground(landscape ? R.drawable.ic_sysbar_highlight_land
                         : R.drawable.ic_sysbar_highlight);
-                v.setTint(true);
         }
 
         return v;
@@ -957,8 +951,6 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
             resolver.registerContentObserver(
                     Settings.System.getUriFor(Settings.System.NAVIGATION_BAR_COLOR), false, this);
             resolver.registerContentObserver(
-                    Settings.System.getUriFor(Settings.System.NAVIGATION_BAR_ALLCOLOR), false, this);
-            resolver.registerContentObserver(
                     Settings.System.getUriFor(Settings.System.MENU_LOCATION), false,
                     this);
             resolver.registerContentObserver(
@@ -1024,8 +1016,6 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
                 Settings.System.MENU_LOCATION, SHOW_RIGHT_MENU);
         mNavigationBarColor = Settings.System.getInt(resolver,
                 Settings.System.NAVIGATION_BAR_COLOR, -1);
-        mColorAllIcons = Settings.System.getBoolean(resolver,
-                Settings.System.NAVIGATION_BAR_ALLCOLOR, false);
         mMenuVisbility = Settings.System.getInt(resolver,
                 Settings.System.MENU_VISIBILITY, VISIBILITY_SYSTEM);
         mMenuArrowKeys = Settings.System.getBoolean(resolver,
