@@ -89,7 +89,7 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
     int mNavigationIconHints = 0;
     private Drawable mBackIcon, mBackAltIcon;
     private boolean mMenuArrowKeys;
-    
+
     public DelegateViewHelper mDelegateHelper;
 
     private BaseStatusBar mBar;
@@ -300,6 +300,9 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
                     if (f.exists()) {
                         v.setImageDrawable(new BitmapDrawable(getResources(), f.getAbsolutePath()));
                     }
+  
+                } else {
+                       v.setImageDrawable(NavBarHelpers.getIconImage(mContext, mClickActions[j]));
                 }
                 addButton(navButtonLayout, v, landscape && !mLeftyMode);
                 // if we are in LeftyMode, then we want to add to end, like Portrait
@@ -307,6 +310,13 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
 
                 if (v.getId() == R.id.back){
                 	mBackIcon = v.getDrawable();
+                }
+                if (mNumberOfButtons == 3 && j != (mNumberOfButtons - 1)) {
+                    // add separator view here
+                    View separator = new View(mContext);
+                    separator.setLayoutParams(getSeparatorLayoutParams(landscape));
+                    addButton(navButtonLayout, separator, landscape);
+                    addLightsOutButton(lightsOut, separator, landscape, true);
                 }
                 if (mNumberOfButtons == 3 && j != (mNumberOfButtons - 1)) {
                     // add separator view here
