@@ -181,6 +181,8 @@ final class UiModeManagerService extends IUiModeManager.Stub {
         mPowerManager = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
         mWakeLock = mPowerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, TAG);
 
+        mTwilightService.registerListener(mTwilightListener, mHandler);
+
         mConfiguration.setToDefaults();
 
         mDefaultUiModeType = context.getResources().getInteger(
