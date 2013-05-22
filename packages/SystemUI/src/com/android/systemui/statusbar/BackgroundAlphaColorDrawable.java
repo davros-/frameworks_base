@@ -1,5 +1,5 @@
 
-package com.android.internal.util.aokp;
+package com.android.systemui.statusbar;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -20,7 +20,7 @@ public class BackgroundAlphaColorDrawable extends ColorDrawable {
 
     public void setBgColor(int color) {
         if (color < 0) {
-            color = Color.BLACK;
+            color = Color.TRANSPARENT;
         }
         mBgColor = color;
         updateColor();
