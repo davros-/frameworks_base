@@ -556,16 +556,6 @@ public class PieController implements BaseStatusBar.NavigationBarCallback,
                 injectKeyDelayed(KeyEvent.KEYCODE_MENU);
                 break;
             case RECENT:
-
-        // play sound effect directly, since detaching the container will prevent to play the sound
-        // at a later time.
-        mPieContainer.playSoundEffect(SoundEffectConstants.CLICK);
-        if (bi.keyCode != 0) {
-            injectKeyDelayed(bi.keyCode, when);
-        } else {
-            // provide the same haptic feedback as if a virtual key is pressed
-            mPieContainer.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-            if (bi == NavigationButtons.RECENT) {
                 if (mStatusBar != null) {
                     mStatusBar.toggleRecentApps();
                 }
