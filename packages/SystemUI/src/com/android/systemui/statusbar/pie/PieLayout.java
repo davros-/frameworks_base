@@ -314,6 +314,12 @@ public class PieLayout extends FrameLayout implements View.OnTouchListener {
         }
 
         mActiveSnap = null;
+<<<<<<< HEAD:packages/SystemUI/src/com/android/systemui/statusbar/pie/PieLayout.java
+        for (Position g : Position.values()) {
+            if ((mTriggerSlots & g.FLAG) == 0) {
+                if (g == Position.LEFT || g == Position.RIGHT) {
+                    mSnapPoints[g.INDEX] = new SnapPoint(g.FACTOR * width, height / 2, g);
+=======
         // reuse already created snap points
         for (PiePosition g : PiePosition.values()) {
             if ((mSnapPointMask & g.FLAG) != 0) {
@@ -321,6 +327,7 @@ public class PieLayout extends FrameLayout implements View.OnTouchListener {
                 int y = height / 2;
                 if (g == PiePosition.LEFT || g == PiePosition.RIGHT) {
                     x = g.FACTOR * width;
+>>>>>>> 9fa8f01... Pie Controls: Fix snap points position.:packages/SystemUI/src/com/android/systemui/statusbar/pie/PieView.java
                 } else {
                     mSnapPoints[g.INDEX] = new SnapPoint(width / 2, g.FACTOR * height, g);
                 }
