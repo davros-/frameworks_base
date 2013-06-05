@@ -2874,7 +2874,7 @@ public class PhoneStatusBar extends BaseStatusBar {
 
     protected void updateSettings() {
         ContentResolver cr = mContext.getContentResolver();
-        mCurrentUIMode = Settings.System.getInt(cr,
+        mCurrUiInvertedMode = Settings.System.getInt(cr,
                 Settings.System.CURRENT_UI_MODE, 0);
         mToggleStyle = Settings.System.getInt(cr, Settings.System.TOGGLES_STYLE,ToggleManager.STYLE_TILE);
     }
