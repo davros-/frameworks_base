@@ -2586,7 +2586,7 @@ public class PhoneStatusBar extends BaseStatusBar {
                     // if We are in Landscape/Phone Mode then swap the XY coordinates for NaVRing Swipe
                     mNavigationBarView.mDelegateHelper.setSwapXY((
                             mContext.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) 
-                            && (mCurrentUIMode == 0));
+                            && (mCurrUiInvertedMode == 0));
                 }
             }
             else if (Intent.ACTION_SCREEN_ON.equals(action)) {
