@@ -534,7 +534,6 @@ static void android_location_GpsLocationProvider_agps_data_conn_open(JNIEnv* env
     sAGpsInterface->data_conn_open(apnStr);
 #endif
     env->ReleaseStringUTFChars(apn, apnStr);
-#endif
 }
 
 static void android_location_GpsLocationProvider_agps_data_conn_closed(JNIEnv* env, jobject obj,
