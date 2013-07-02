@@ -79,14 +79,14 @@ public class PhoneStatusBarView extends PanelBar {
             mSettingsPanelDragzoneFrac = 0f;
         }
         mFullWidthNotifications = mSettingsPanelDragzoneFrac <= 0f;
-        mActivityManager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
-        mKeyguardManager = (KeyguardManager) mContext.getSystemService(Context.KEYGUARD_SERVICE);
-        SettingsObserver settingsObserver = new SettingsObserver(new Handler());
-        settingsObserver.observe();
         Drawable bg = mContext.getResources().getDrawable(R.drawable.status_bar_background);
         if(bg instanceof ColorDrawable) {
             setBackground(new BackgroundAlphaColorDrawable(((ColorDrawable) bg).getColor()));
         }
+
+        // no need for observer, sysui gets killed when the style is changed.
+        mToggleStyle = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.TOGGLES_STYLE, 0);
     }
 
     public void setBar(PhoneStatusBar bar) {
